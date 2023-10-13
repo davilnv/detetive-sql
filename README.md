@@ -40,6 +40,6 @@ O jogo poderia ter um final surpreendente.
 
 ## Páginas
 
-- [Informações](https://github.com/davilnv/detetive-sql/INFO.md)
-- [Passos para desenvolvimento](https://github.com/davilnv/detetive-sql/PASSOS.md)
-- [Roteiro do Jogo](https://github.com/davilnv/detetive-sql/ROTEIRO.md)
+- [Informações](https://github.com/davilnv/detetive-sql/blob/main/INFO.md)
+- [Passos para desenvolvimento](https://github.com/davilnv/detetive-sql/blob/main/PASSOS.md)
+- [Roteiro do Jogo](https://github.com/davilnv/detetive-sql/blob/main/ROTEIRO.md)
