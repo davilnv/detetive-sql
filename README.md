@@ -1,16 +1,18 @@
 # Detetive SQL - O Olho de Windsor
 
-Plataforma: PC, Mac, Linux
+<img alt="user-page" src="/menu/menu-game.png">
 
-Engine: Godot
+**Plataforma:** PC, Mac, Linux
 
-Gênero: Aventura, Puzzle
+**Engine:** Java, LibGDX
 
-História:
+**Gênero:** Aventura, Puzzle
+
+**História:**
 
 O jogador assume o papel de um jovem detetive que está começando sua carreira. Sua primeira investigação é o sumiço de um diamante valioso de um museu. O jogador precisa usar suas habilidades de programação SQL para pesquisar o banco de dados do museu e encontrar pistas que ajudem a resolver o crime.
 
-Jogabilidade:
+**Jogabilidade:**
 
 O jogo é dividido em três fases:
 
@@ -35,3 +37,9 @@ Aqui estão algumas ideias específicas para como a história poderia ser desenv
 O crime poderia ser um roubo de um diamante valioso de um museu.
 As testemunhas e suspeitos poderiam ser personagens interessantes e bem desenvolvidos.
 O jogo poderia ter um final surpreendente.
+
+## Páginas
+
+- [Informações](https://github.com/davilnv/detetive-sql/INFO.md)
+- [Passos para desenvolvimento](https://github.com/davilnv/detetive-sql/PASSOS.md)
+- [Roteiro do Jogo](https://github.com/davilnv/detetive-sql/ROTEIRO.md)
