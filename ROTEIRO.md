@@ -31,7 +31,7 @@ Para responder às perguntas, o jogador precisa usar as instruções SQL para pe
 
     a) Sir Alexander Kensington (Diretor do Museu): Ele estava no museu durante o desaparecimento do diamante, mas afirma não ter envolvimento no caso.
 
-    b) Dr. Eleanor Thornton (Curadora-Chefe): Responsável pelo cuidado das relíquias, ela tinha acesso ao diamante, mas afirma que não esteve envolvida no desaparecimento.
+    b) Dra. Eleanor Thornton (Curadora-Chefe): Responsável pelo cuidado das relíquias, ela tinha acesso ao diamante, mas afirma que não esteve envolvida no desaparecimento.
 
     c) William Smith (Guarda de Segurança): Estava de plantão durante a noite do desaparecimento e pode ter informações sobre qualquer atividade suspeita.
 
