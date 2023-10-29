@@ -9,13 +9,13 @@ import java.util.List;
 
 import org.w3c.dom.events.MouseEvent;
 
-import model.Camada;
-import model.Camadas;
-import model.Logica;
-import model.Inimigo;
-import model.NumerosAleatorios;
-import model.Personagem;
-import view.Tela;
+import br.com.ihm.davilnv.model.Camada;
+import br.com.ihm.davilnv.model.Camadas;
+import br.com.ihm.davilnv.model.Logica;
+import br.com.ihm.davilnv.model.Inimigo;
+import br.com.ihm.davilnv.model.NumerosAleatorios;
+import br.com.ihm.davilnv.model.Personagem;
+import br.com.ihm.davilnv.view.Tela;
 
 public class ControlePintura implements Runnable{
 

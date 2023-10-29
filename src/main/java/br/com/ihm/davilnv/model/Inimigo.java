@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 import java.util.List;
 import java.util.Random;
 
-import controller.ControlePintura;
+import br.com.ihm.davilnv.controller.ControlePintura;
 
 public class Inimigo{
 	private int x, y;

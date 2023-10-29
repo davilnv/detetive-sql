@@ -3,17 +3,17 @@ package br.com.ihm.davilnv.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import model.Camada;
-import model.Camadas;
-import model.Inimigo;
-import model.Inimigos;
-import model.Logica;
-import model.Personagem;
-import view.Ajuda;
-import view.Credito;
-import view.Inicializacao;
-import view.Menu;
-import view.Tela;
+import br.com.ihm.davilnv.model.Camada;
+import br.com.ihm.davilnv.model.Camadas;
+import br.com.ihm.davilnv.model.Inimigo;
+import br.com.ihm.davilnv.model.Inimigos;
+import br.com.ihm.davilnv.model.Logica;
+import br.com.ihm.davilnv.model.Personagem;
+import br.com.ihm.davilnv.view.Ajuda;
+import br.com.ihm.davilnv.view.Credito;
+import br.com.ihm.davilnv.view.Inicializacao;
+import br.com.ihm.davilnv.view.Menu;
+import br.com.ihm.davilnv.view.Tela;
 
 public class ControleTelas implements ActionListener{
 	private Menu menu;

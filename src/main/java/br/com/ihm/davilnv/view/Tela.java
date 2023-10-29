@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import model.Personagem;
+import br.com.ihm.davilnv.model.Personagem;
 
 public class Tela extends TelaGenerica {
 	private Mapa mapa;

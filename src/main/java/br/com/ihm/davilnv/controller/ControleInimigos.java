@@ -1,6 +1,6 @@
 package br.com.ihm.davilnv.controller;
 
-import model.Inimigo;
+import br.com.ihm.davilnv.model.Inimigo;
 
 public class ControleInimigos extends Thread{
 	

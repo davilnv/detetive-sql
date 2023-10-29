@@ -11,7 +11,7 @@ import javax.imageio.ImageReader;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import model.Personagem;
+import br.com.ihm.davilnv.model.Personagem;
 
 public class Inventario extends JPanel{
 	private BufferedImage iconeCoracao, iconeEstrela;

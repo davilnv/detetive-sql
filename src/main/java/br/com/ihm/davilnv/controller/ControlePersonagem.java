@@ -3,8 +3,8 @@ package br.com.ihm.davilnv.controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import model.Personagem;
-import view.Mapa;
+import br.com.ihm.davilnv.model.Personagem;
+import br.com.ihm.davilnv.view.Mapa;
 
 public class ControlePersonagem extends Thread implements KeyListener {
 
