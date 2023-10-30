@@ -18,8 +18,8 @@ public class Credito extends TelaGenerica{
 		voltarButton = new JButton("Voltar");
 		voltarButton.setBounds(220, 450, 200, 20);
 		
-		imagem = new ImageIcon(getClass().getClassLoader().getResource("tituloJogo.png"));
-		logoUast = new ImageIcon(getClass().getClassLoader().getResource("uast.png"));
+		imagem = new ImageIcon("src/main/resources/res/tituloJogo.png");
+		logoUast = new ImageIcon("src/main/resources/res/uast.png");
 		
 		JPanel panel = new JPanel() {
 			protected void paintComponent(Graphics g) {

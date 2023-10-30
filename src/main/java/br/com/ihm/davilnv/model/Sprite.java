@@ -4,6 +4,7 @@ package br.com.ihm.davilnv.model;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -62,7 +63,7 @@ public abstract class Sprite {
 
         try {
 
-            this.personagem = ImageIO.read(getClass().getClassLoader().getResourceAsStream(endereco));
+            this.personagem = ImageIO.read(new FileInputStream(endereco));
             this.aparencia = aparencia;
             this.largura = largura;
             this.altura = altura;

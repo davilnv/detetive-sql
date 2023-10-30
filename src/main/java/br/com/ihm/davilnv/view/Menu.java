@@ -3,6 +3,7 @@ package br.com.ihm.davilnv.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.FileInputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,8 +14,8 @@ public class Menu extends TelaGenerica{
 	
 	public Menu(){
 		setLayout(null);
-		
-		ImageIcon imagem = new ImageIcon(getClass().getClassLoader().getResource("capaMenu.png"));
+
+		ImageIcon imagem = new ImageIcon("src/main/resources/res/capaMenu.png");
 		
 		JPanel panel = new JPanel() {
 			protected void paintComponent(Graphics g) {

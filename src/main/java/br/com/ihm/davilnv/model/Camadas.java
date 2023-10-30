@@ -1,15 +1,35 @@
 package br.com.ihm.davilnv.model;
 
+import java.io.FileNotFoundException;
+
 public class Camadas {
-	 // Fase 1
-	static Camada fase1Fundo = new Camada(16, 16, 32, 32, "tiled.png", "fase1fundo.txt");
-	static Camada fase1Colisao = new Camada(16, 16, 32, 32, "tiled.png", "fase1colisao.txt");
-	static Camada fase1Topo = new Camada(16, 16, 32, 32, "tiled.png", "fase1topo.txt");
-	
-	// Fase 2
-	static Camada fase2Fundo = new Camada(16, 16, 32, 32, "tiled.png", "fase2fundo.txt");
-	static Camada fase2Colisao = new Camada(16, 16, 32, 32, "tiled.png", "fase2colisao.txt");
-	static Camada fase2Topo = new Camada(16, 16, 32, 32, "tiled.png", "fase2topo.txt");
+
+	static Camada fase1Fundo;
+	static Camada fase1Colisao;
+	static Camada fase1Topo;
+	static Camada fase2Fundo;
+	static Camada fase2Colisao;
+	static Camada fase2Topo;
+
+	static {
+		try {
+			String tiledPath = "src/main/resources/res/tiled.png";
+			// Fase 1
+			fase1Fundo = new Camada(16, 16, 32, 32, tiledPath, getPathFase(1, "fundo"));
+			fase1Colisao = new Camada(16, 16, 32, 32, tiledPath, getPathFase(1, "colisao"));
+			fase1Topo = new Camada(16, 16, 32, 32, tiledPath, getPathFase(1, "topo"));
+			// Fase 2
+			fase2Fundo = new Camada(16, 16, 32, 32, tiledPath, getPathFase(2, "fundo"));
+			fase2Colisao = new Camada(16, 16, 32, 32, tiledPath, getPathFase(2, "colisao"));
+			fase2Topo = new Camada(16, 16, 32, 32, tiledPath, getPathFase(2, "topo"));
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static String getPathFase(int fase, String tipo) {
+		return "src/main/resources/res/fase"+fase+tipo+".txt";
+	}
 	
 	public static Camada[] fase1() {
 		Camada[] camadas = new Camada[3];

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -28,9 +29,9 @@ public class Inventario extends JPanel{
 		this.personagem2 = personagem2;
 		sairButton = new JButton("Sair");
 		sairButton.setBounds(535, 480, 80, 20);
-		
-		iconeCoracao = ImageIO.read(getClass().getClassLoader().getResourceAsStream("iconeCoracao.png"));
-		iconeEstrela = ImageIO.read(getClass().getClassLoader().getResourceAsStream("iconeEstrela.png"));
+
+		iconeCoracao = ImageIO.read(new FileInputStream("src/main/resources/res/iconeCoracao.png"));
+		iconeEstrela = ImageIO.read(new FileInputStream("src/main/resources/res/iconeEstrela.png"));
 		add(sairButton);
 	}
 	

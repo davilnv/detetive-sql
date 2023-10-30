@@ -2,12 +2,7 @@ package br.com.ihm.davilnv.model;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -23,7 +18,7 @@ public class Camada{
 	private int tileWidth;
 	private int tileHeight;
 
-	public Camada(int mapaWidth, int mapaHeight, int tileWidth, int tileHeight, String img, String arquivo) {
+	public Camada(int mapaWidth, int mapaHeight, int tileWidth, int tileHeight, String img, String arquivo) throws FileNotFoundException {
 		this.mapaWidth=mapaWidth;
 		this.mapaHeight=mapaHeight;
 		this.tileWidth=tileWidth;
@@ -31,16 +26,16 @@ public class Camada{
 		mapa = new int[mapaWidth][mapaHeight];
 		mapa = carregaMatriz(mapa, arquivo);
 		try {
-			tileSet = ImageIO.read(getClass().getClassLoader().getResource(img));
+			tileSet = ImageIO.read(new FileInputStream(img));
 		} catch (IOException e) {
-			System.out.println("Erro ao tileSet.\nEncerrando aplica��o");
+			System.out.println("Erro ao tileSet.\nEncerrando aplicação");
 			System.exit(0);
 		}
 	}
 
-	public int[][] carregaMatriz(int[][] matz, String arquivo) {
+	public int[][] carregaMatriz(int[][] matz, String arquivo) throws FileNotFoundException {
 		ArrayList<String> linhasMatrizCamada = new ArrayList<String>();
-		InputStream is = getClass().getClassLoader().getResourceAsStream (arquivo);
+		InputStream is = new FileInputStream(arquivo);
 		BufferedReader br = new BufferedReader (new InputStreamReader (is));   
 		String linha="";
 		try {
