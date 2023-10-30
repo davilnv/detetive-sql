@@ -21,9 +21,9 @@ public class App {
         Personagem personagem2 = null;
         try {
             personagem = new Personagem(Inimigos.iniciarInimigos(), resultado, 0, 128, 96, 4, 3,
-                    236, 236, "src/main/resources/res/personagem.png");
+                    236, 236, "/res/personagem.png");
             personagem2 = new Personagem(personagem.getInimigo(), resultado, 0, 128, 96, 4, 3,
-                    236, 280, "src/main/resources/res/personagem2.png");
+                    236, 280, "/res/personagem2.png");
         } catch (Exception e) {
             System.out.println("Erro ao tentar carregar Sprite");
         }

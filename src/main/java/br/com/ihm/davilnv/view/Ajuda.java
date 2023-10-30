@@ -19,7 +19,7 @@ public class Ajuda extends TelaGenerica{
 		voltarButton = new JButton("Voltar");
 		voltarButton.setBounds(220, 480, 200, 20);
 		
-		imagem = new ImageIcon("src/main/resources/res/tituloJogo.png");
+		imagem = new ImageIcon(Ajuda.class.getResource("/res/tituloJogo.png"));
 		
 		JPanel panel = new JPanel() {
 			protected void paintComponent(Graphics g) {

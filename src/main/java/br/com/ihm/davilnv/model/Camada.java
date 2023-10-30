@@ -18,7 +18,7 @@ public class Camada{
 	private int tileWidth;
 	private int tileHeight;
 
-	public Camada(int mapaWidth, int mapaHeight, int tileWidth, int tileHeight, String img, String arquivo) throws FileNotFoundException {
+	public Camada(int mapaWidth, int mapaHeight, int tileWidth, int tileHeight, String img, String arquivo) {
 		this.mapaWidth=mapaWidth;
 		this.mapaHeight=mapaHeight;
 		this.tileWidth=tileWidth;
@@ -26,16 +26,16 @@ public class Camada{
 		mapa = new int[mapaWidth][mapaHeight];
 		mapa = carregaMatriz(mapa, arquivo);
 		try {
-			tileSet = ImageIO.read(new FileInputStream(img));
+			tileSet = ImageIO.read(Camada.class.getResourceAsStream(img));
 		} catch (IOException e) {
 			System.out.println("Erro ao tileSet.\nEncerrando aplicação");
 			System.exit(0);
 		}
 	}
 
-	public int[][] carregaMatriz(int[][] matz, String arquivo) throws FileNotFoundException {
+	public int[][] carregaMatriz(int[][] matz, String arquivo) {
 		ArrayList<String> linhasMatrizCamada = new ArrayList<String>();
-		InputStream is = new FileInputStream(arquivo);
+		InputStream is = Camada.class.getResourceAsStream(arquivo);
 		BufferedReader br = new BufferedReader (new InputStreamReader (is));   
 		String linha="";
 		try {

@@ -63,7 +63,7 @@ public abstract class Sprite {
 
         try {
 
-            this.personagem = ImageIO.read(new FileInputStream(endereco));
+            this.personagem = ImageIO.read(Sprite.class.getResourceAsStream(endereco));
             this.aparencia = aparencia;
             this.largura = largura;
             this.altura = altura;

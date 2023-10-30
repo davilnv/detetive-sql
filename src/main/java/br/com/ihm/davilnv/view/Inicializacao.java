@@ -25,9 +25,9 @@ public class Inicializacao extends TelaGenerica{
 		jogarButton = new JButton("Jogar");
 		jogarButton.setBounds(320, 450, 100, 20);
 		
-		imagem = new ImageIcon("src/main/resources/res/tituloJogo.png");
-		iconeSigleplayer = new ImageIcon("src/main/resources/res/iconeSingleplayer.png");
-		iconeMultplayer = new ImageIcon("src/main/resources/res/iconeMultplayer.png");
+		imagem = new ImageIcon(Inicializacao.class.getResource("/res/tituloJogo.png"));
+		iconeSigleplayer = new ImageIcon(Inicializacao.class.getResource("/res/iconeSingleplayer.png"));
+		iconeMultplayer = new ImageIcon(Inicializacao.class.getResource("/res/iconeMultplayer.png"));
 		
 		ButtonGroup grupoJogador = new ButtonGroup();
 		singleButton = new JRadioButton("Single Player", true);
