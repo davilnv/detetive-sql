@@ -9,11 +9,11 @@
     ],
     "fileStates": {
         "mapa.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 0,
+            "scale": 0.33,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 780,
-                "y": 509.33333333333326
+                "x": 174.24242424242425,
+                "y": 330.30303030303025
             }
         },
         "tiled.tsx": {
