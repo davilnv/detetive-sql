@@ -19,14 +19,14 @@ public class App {
         Inimigo resultado = new Inimigo(30, 176, "");
         Personagem personagem = null;
         Personagem personagem2 = null;
-        try {
+//        try {
             personagem = new Personagem(Inimigos.iniciarInimigos(), resultado, 0, 128, 96, 4, 3,
                     236, 236, "/res/personagem.png");
             personagem2 = new Personagem(personagem.getInimigo(), resultado, 0, 128, 96, 4, 3,
                     236, 280, "/res/personagem2.png");
-        } catch (Exception e) {
-            System.out.println("Erro ao tentar carregar Sprite");
-        }
+//        } catch (Exception e) {
+//            System.out.println("Erro ao tentar carregar Sprite");
+//        }
         Tela tela = new Tela(personagem, personagem2);
         Menu menu = new Menu();
         Ajuda ajuda = new Ajuda();
