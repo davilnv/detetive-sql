@@ -24,7 +24,7 @@ public class Credito extends TelaGenerica{
 		JPanel panel = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				g.setColor(Color.LIGHT_GRAY);
-				g.fillRect(0, 0, TelaGenerica.LARGURA, TelaGenerica.ALTURA);
+				g.fillRect(0, 0, TelaGenerica.DEFAULT_WIDTH, TelaGenerica.DEFAULT_HEIGHT);
 				g.drawImage(imagem.getImage(), 220, 50, null);
 				g.setColor(Color.BLACK);
 				g.drawRect(15, 110, 610, 300);
@@ -41,7 +41,7 @@ public class Credito extends TelaGenerica{
 				g.drawImage(logoUast.getImage(), 245, 300, null);
 			}
 		};
-		panel.setBounds(0, 0, TelaGenerica.LARGURA, TelaGenerica.ALTURA);
+		panel.setBounds(0, 0, TelaGenerica.DEFAULT_WIDTH, TelaGenerica.DEFAULT_HEIGHT);
 
 		add(voltarButton);
 		add(panel);

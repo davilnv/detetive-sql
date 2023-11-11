@@ -2,20 +2,20 @@ package br.com.ihm.davilnv.controller;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 
 import br.com.ihm.davilnv.model.Personagem;
 import br.com.ihm.davilnv.view.Mapa;
 
 public class ControlePersonagem extends Thread implements KeyListener {
 
-	private Personagem personagem,personagem2;
+	private List<Personagem> personagens;
 	private String direcao ="";
 	private String direcao2 ="";
 	private boolean taRodando;
 
-	public ControlePersonagem(Personagem personagem, Personagem personagem2) {
-		this.personagem = personagem;
-		this.personagem2 = personagem2;
+	public ControlePersonagem(List<Personagem> personagens) {
+		this.personagens = personagens;
 		
 		start();
 		taRodando = true;
@@ -26,10 +26,10 @@ public class ControlePersonagem extends Thread implements KeyListener {
 
 		while(true) {
 			try {
-				personagem.mover(direcao);
-				personagem2.mover(direcao2);
-				personagem.perderVida();
-				personagem2.perderVida();
+				personagens.get(0).mover(direcao);
+				personagens.get(1).mover(direcao2);
+				personagens.get(0).perderVida();
+				personagens.get(1).perderVida();
 				Thread.sleep(40);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

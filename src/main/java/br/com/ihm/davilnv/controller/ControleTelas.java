@@ -2,18 +2,17 @@ package br.com.ihm.davilnv.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import br.com.ihm.davilnv.model.Camada;
-import br.com.ihm.davilnv.model.Camadas;
-import br.com.ihm.davilnv.model.Inimigo;
-import br.com.ihm.davilnv.model.Inimigos;
-import br.com.ihm.davilnv.model.Logica;
-import br.com.ihm.davilnv.model.Personagem;
+import br.com.ihm.davilnv.model.*;
 import br.com.ihm.davilnv.view.Ajuda;
 import br.com.ihm.davilnv.view.Credito;
 import br.com.ihm.davilnv.view.Inicializacao;
 import br.com.ihm.davilnv.view.Menu;
 import br.com.ihm.davilnv.view.Tela;
+import br.com.ihm.davilnv.view.components.GameButton;
 
 public class ControleTelas implements ActionListener{
 	private Menu menu;
@@ -21,7 +20,8 @@ public class ControleTelas implements ActionListener{
 	private Ajuda ajuda;
 	private Inicializacao inicializacao;
 	private Credito credito;
-	private Personagem personagem, personagem2;
+	private List<Personagem> personagens;
+	private List<InventoryInfo> inventoryInfos;
 	private Logica logica;
 	private ControlePersonagem controlePersonagem;
 	private ControleInimigos controleInimigos;
@@ -29,36 +29,38 @@ public class ControleTelas implements ActionListener{
 	private ControlePintura controlePintura;
 	private String operacao;
 
-	public ControleTelas(Menu menu, Tela tela, Ajuda ajuda, Inicializacao inicializacao, Credito credito, Personagem personagem,
-			Personagem personagem2, ControlePersonagem controlePersonagem) {
-		this.menu = menu;
-		this.tela = tela;
-		this.ajuda = ajuda;
-		this.inicializacao = inicializacao;
-		this.credito = credito;
-		this.personagem = personagem;
-		this.personagem2 = personagem2;
-		this.controlePersonagem = controlePersonagem;
-		
-		menu.getJogarButton().addActionListener(this);
-		menu.getAjudaButton().addActionListener(this);
-		menu.getCreditoButton().addActionListener(this);
-		menu.getSairButton().addActionListener(this);
-		tela.getInventario().getSairButton().addActionListener(this);
-		ajuda.getVoltarButton().addActionListener(this);
-		inicializacao.getVoltarButton().addActionListener(this);
-		inicializacao.getJogarButton().addActionListener(this);
-		credito.getVoltarButton().addActionListener(this);
+	public ControleTelas() throws IOException {
+//		personagens = new ArrayList<>();
+//		Inimigo resultado = new Inimigo(30, 176, "");
+//		Personagem personagem = new Personagem(Inimigos.iniciarInimigos(), resultado, 0, 128, 96, 4, 3, 236, 236, "/res/personagem.png");
+//		personagens.add(personagem);
+//		tela = new Tela(personagens);
+		menu = new Menu("/assets/background/menu-game.png");
+//		ajuda = new Ajuda();
+//		inicializacao = new Inicializacao();
+//		credito = new Credito();
+//
+//		controlePersonagem = new ControlePersonagem(personagens);
+//
+//
+		for (GameButton button : menu.getButtonsList()) {
+			button.addActionListener(this);
+		}
+//		tela.getInventario().getSairButton().addActionListener(this);
+//		ajuda.getVoltarButton().addActionListener(this);
+//		inicializacao.getVoltarButton().addActionListener(this);
+//		inicializacao.getJogarButton().addActionListener(this);
+//		credito.getVoltarButton().addActionListener(this);
 	}
 
 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (menu.getJogarButton() == e.getSource()) {
+		if (menu.getButtonByKey("jogar") == e.getSource()) {
 			menu.setVisible(false);
 			inicializacao.setVisible(true);
-			
+
 		}
 		if (inicializacao.getVoltarButton() == e.getSource()) {
 			inicializacao.setVisible(false);
@@ -73,16 +75,16 @@ public class ControleTelas implements ActionListener{
 				multplayer = true;
 			}
 			verificarOperacao();
-			resultado = personagem.getResultado();
-			logica = new Logica(personagem, personagem2, resultado, operacao);
-			controleInimigos = new ControleInimigos(personagem.getInimigo(), resultado);
-			controlePintura = new ControlePintura(tela, personagem, personagem2, logica, controlePersonagem,
+			resultado = personagens.get(0).getResultado();
+			logica = new Logica(personagens, resultado, operacao);
+			controleInimigos = new ControleInimigos(personagens.get(0).getInimigo(), resultado);
+			controlePintura = new ControlePintura(tela, personagens, logica, controlePersonagem,
 					controleInimigos,resultado);
 			controlePintura.setMultplayer(multplayer);
 			tela.getInventario().setMultplayer(multplayer);
 			if (inicializacao.getFacilButton().isSelected()) {
 				controlePintura.getControleInimigos().setVelocidade(15);
-			} 
+			}
 			if (inicializacao.getMedioButton().isSelected()) {
 				controlePintura.getControleInimigos().setVelocidade(10);
 			}
@@ -96,14 +98,10 @@ public class ControleTelas implements ActionListener{
 		if (tela.getInventario().getSairButton() == e.getSource()) {
 			tela.setVisible(false);
 			menu.setVisible(true);
-			personagem.setLocale(236, 236);
-			personagem2.setLocale(236, 280);
-			personagem.setVida(100);
-			personagem.setPontos(0);
-			personagem2.setVida(100);
-			personagem2.setPontos(0);
-			personagem.setInimigo(logica.resetarPosicaoInimigos());
-			personagem2.setInimigo(personagem.getInimigo());
+			personagens.get(0).reset(236, 236);
+			personagens.get(1).reset(236, 280);
+			personagens.get(0).setInimigo(logica.resetarPosicaoInimigos());
+			personagens.get(1).setInimigo(personagens.get(0).getInimigo());
 			logica.setCamadaFundo(Camadas.fase1()[0]);
 			logica.setCamadaColisao(Camadas.fase1()[1]);
 			logica.setCamadaTopo(Camadas.fase1()[2]);
@@ -111,15 +109,15 @@ public class ControleTelas implements ActionListener{
 			controlePintura.getThread().stop();
 			controleInimigos.stop();
 		}
-		if (menu.getAjudaButton() == e.getSource()) {
+		if (menu.getButtonByKey("tutorial") == e.getSource()) {
 			ajuda.setVisible(true);
 			menu.setVisible(false);
 		}
-		if (menu.getCreditoButton() == e.getSource()) {
+		if (menu.getButtonByKey("credito") == e.getSource()) {
 			credito.setVisible(true);
 			menu.setVisible(false);
 		}
-		if (menu.getSairButton() == e.getSource()) {
+		if (menu.getButtonByKey("sair") == e.getSource()) {
 			System.exit(0);
 		}
 		if (ajuda.getVoltarButton() == e.getSource()) {

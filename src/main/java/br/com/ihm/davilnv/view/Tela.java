@@ -1,6 +1,7 @@
 package br.com.ihm.davilnv.view;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -9,12 +10,12 @@ import br.com.ihm.davilnv.model.Personagem;
 public class Tela extends TelaGenerica {
 	private Mapa mapa;
 	private Inventario inventario;
-	private Personagem personagem, personagem2;
+	private List<Personagem> personagens;
 	
-	public Tela(Personagem personagem, Personagem personagem2) throws IOException {		
-		this.personagem = personagem;
+	public Tela(List<Personagem> personagens) throws IOException {
+		this.personagens = personagens;
 		mapa = new Mapa();
-		inventario = new Inventario(personagem, personagem2);
+		inventario = new Inventario(personagens);
 		add(mapa);
 		add(inventario);
 		
@@ -28,12 +29,11 @@ public class Tela extends TelaGenerica {
 		return inventario;
 	}
 
-	public Personagem getPersonagem() {
-		return personagem;
+	public List<Personagem> getPersonagens() {
+		return personagens;
 	}
 
-	public void setPersonagem(Personagem personagem) {
-		this.personagem = personagem;
+	public void setPersonagens(List<Personagem> personagens) {
+		this.personagens = personagens;
 	}
-	
 }

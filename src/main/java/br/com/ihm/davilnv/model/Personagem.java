@@ -110,6 +110,23 @@ public class Personagem extends Sprite {
         return false;
     }
 
+    public String getStatus(int win, int lose) {
+        if (vida == lose) {
+            return "Game Over!";
+        }
+        if (pontos == win) {
+            return "Ganhou!!!";
+        }
+        return "";
+
+    }
+
+    public void reset(int posX, int posY) {
+        setLocale(posX, posY);
+        vida = 100;
+        pontos = 0;
+    }
+
     @Override
     public void setX(int x) {
         if(!colisao(ControlePintura.colisao, x-getX(), 0) && !colisao())

@@ -65,7 +65,7 @@ public class Inicializacao extends TelaGenerica{
 		JPanel panel = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				g.setColor(Color.LIGHT_GRAY);
-				g.fillRect(0, 0, TelaGenerica.LARGURA, TelaGenerica.ALTURA);
+				g.fillRect(0, 0, TelaGenerica.DEFAULT_WIDTH, TelaGenerica.DEFAULT_HEIGHT);
 				g.drawImage(imagem.getImage(), 220, 50, null);
 				g.setColor(Color.BLACK);
 				g.drawRect(110, 110, 400, 300);
@@ -78,7 +78,7 @@ public class Inicializacao extends TelaGenerica{
 				g.drawString("Escolha a opera��o matem�tica:", 195, 285);
 			}
 		};
-		panel.setBounds(0, 0, TelaGenerica.LARGURA, TelaGenerica.ALTURA);
+		panel.setBounds(0, 0, TelaGenerica.DEFAULT_WIDTH, TelaGenerica.DEFAULT_HEIGHT);
 		
 		add(singleButton);
 		add(multButton);

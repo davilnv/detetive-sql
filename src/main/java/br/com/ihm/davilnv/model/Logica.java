@@ -1,9 +1,10 @@
 package br.com.ihm.davilnv.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Logica {
-	private Personagem personagem, personagem2;
+	private List<Personagem> personagens;
 	private Inimigo resultado;
 	private int num1, num2;
 	private int resultadoOperacao;
@@ -12,9 +13,8 @@ public class Logica {
 	private boolean ganhou;
 	private String operacao;
 	
-	public Logica(Personagem personagem, Personagem personagem2, Inimigo resultado, String operacao) {
-		this.personagem = personagem;
-		this.personagem2 = personagem2;
+	public Logica(List<Personagem> personagens, Inimigo resultado, String operacao) {
+		this.personagens = personagens;
 		this.resultado = resultado;
 		this.operacao = operacao;
 		calcular();
@@ -58,70 +58,70 @@ public class Logica {
 	}
 
 	public void iniciarFase() {
-		if (personagem.getVida() == 0) {
-			personagem.setInimigo(resetarPosicaoInimigos());
+		if (personagens.get(0).getVida() == 0) {
+			personagens.get(0).setInimigo(resetarPosicaoInimigos());
 			camadaFundo = Camadas.fase1()[0];
 			camadaColisao = Camadas.fase1()[1];
 			camadaTopo = Camadas.fase1()[2];
 		}
-		if (personagem.colisaoResultado()) {
-			int pos = NumerosAleatorios.gerarNumeroAleatorio(posicoes.size()); 
+		if (personagens.get(0).colisaoResultado()) {
+			int pos = NumerosAleatorios.gerarNumeroAleatorio(posicoes.size());
 			resultado.setX(posicoes.get(pos).x);
 			resultado.setY(posicoes.get(pos).y);
-			personagem.setPontos(personagem.getPontos() + 1);
+			personagens.get(0).setPontos(personagens.get(0).getPontos() + 1);
 //			num1 = NumerosAleatorios.gerarNumeroAleatorio();
 //			num2 = NumerosAleatorios.gerarNumeroAleatorio();
 			calcular();
 			gerarAparenciaInimigo();
-			
+
 			resultado.setAparencia("" + resultadoOperacao);
-			if (personagem.getPontos() == 15) {
-				personagem.setX(92);
-				personagem.setY(182);
-				personagem2.setX(92);
-				personagem2.setY(182);
+			if (personagens.get(0).getPontos() == 15) {
+				personagens.get(0).setX(92);
+				personagens.get(0).setY(182);
+				personagens.get(1).setX(92);
+				personagens.get(1).setY(182);
 				resultado.setX(448);
 				resultado.setY(160);
-				for (Inimigo enemy : personagem.getInimigo()) {
+				for (Inimigo enemy : personagens.get(0).getInimigo()) {
 					enemy.setX(448);
 					enemy.setY(160);
 				}
 				camadaFundo = Camadas.fase2()[0];
 				camadaColisao = Camadas.fase2()[1];
 				camadaTopo = Camadas.fase2()[2];
-			} else if (personagem.getPontos() == 30) {
+			} else if (personagens.get(0).getPontos() == 30) {
 				ganhou = true;
 			}
 		}
-		if (personagem2.colisaoResultado()) {
-			int pos = NumerosAleatorios.gerarNumeroAleatorio(posicoes.size()); 
+		if (personagens.get(1).colisaoResultado()) {
+			int pos = NumerosAleatorios.gerarNumeroAleatorio(posicoes.size());
 			resultado.setX(posicoes.get(pos).x);
 			resultado.setY(posicoes.get(pos).y);
-			personagem2.setPontos(personagem2.getPontos() + 1);
+			personagens.get(1).setPontos(personagens.get(1).getPontos() + 1);
 //			num1 = NumerosAleatorios.gerarNumeroAleatorio();
 //			num2 = NumerosAleatorios.gerarNumeroAleatorio();
 			calcular();
 			gerarAparenciaInimigo();
-			
+
 			resultado.setAparencia("" + resultadoOperacao);
-			if (personagem2.getPontos() == 15) {
-				personagem2.setX(92);
-				personagem2.setY(182);
-				personagem.setX(92);
-				personagem.setY(182);
+			if (personagens.get(1).getPontos() == 15) {
+				personagens.get(1).setX(92);
+				personagens.get(1).setY(182);
+				personagens.get(0).setX(92);
+				personagens.get(0).setY(182);
 				resultado.setX(448);
 				resultado.setY(160);
-				for (Inimigo enemy : personagem2.getInimigo()) {
+				for (Inimigo enemy : personagens.get(1).getInimigo()) {
 					enemy.setX(448);
 					enemy.setY(160);
 				}
 				camadaFundo = Camadas.fase2()[0];
 				camadaColisao = Camadas.fase2()[1];
 				camadaTopo = Camadas.fase2()[2];
-			} else if (personagem2.getPontos() == 30) {
+			} else if (personagens.get(1).getPontos() == 30) {
 				ganhou = true;
 			}
-			
+
 		}
 	}
 	
@@ -156,7 +156,7 @@ public class Logica {
 		while (cont > -1) {
 			int num = NumerosAleatorios.gerarNumeroAleatorio(19);
 			if (num != resultadoOperacao) {
-				personagem.getInimigo()[cont].setAparencia("" + num);
+				personagens.get(0).getInimigo()[cont].setAparencia("" + num);
 				cont--;
 			}
 		}

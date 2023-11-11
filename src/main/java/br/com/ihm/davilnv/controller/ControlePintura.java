@@ -20,7 +20,7 @@ import br.com.ihm.davilnv.view.Tela;
 public class ControlePintura implements Runnable{
 
 	private Tela tela;
-	private Personagem personagem, personagem2;
+	private List<Personagem> personagens;
 	private Logica logica;
 	private ControlePersonagem controlePersonagem;
 	private ControleInimigos controleInimigos;
@@ -31,11 +31,10 @@ public class ControlePintura implements Runnable{
 	private Thread thread;
 	private boolean multplayer;
 	
-	public ControlePintura(Tela tela, Personagem personagem, Personagem personagem2, Logica logica, 
+	public ControlePintura(Tela tela, List<Personagem> personagens, Logica logica,
 			ControlePersonagem controlePersonagem, ControleInimigos controleInimigos, Inimigo resultado) {
 		this.tela = tela;
-		this.personagem = personagem;
-		this.personagem2 = personagem2;
+		this.personagens = personagens;
 		this.logica = logica;
 		this.controlePersonagem = controlePersonagem;
 		this.controleInimigos = controleInimigos;
@@ -67,15 +66,15 @@ public class ControlePintura implements Runnable{
 		g.drawImage(camadaFundo.camada, 0, 0, null);
 		g.drawImage(camadaColisao.camada, 0, 0, null);
 
-		for (Inimigo enemy : personagem.getInimigo()) {
+		for (Inimigo enemy : personagens.get(0).getInimigo()) {
 			g.drawString(enemy.getAparencia(), enemy.getX()+5, enemy.getY()+25);
 		}
 		g.drawString(resultado.getAparencia(), resultado.getX()+5, resultado.getY()+25);
-		g.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
+		g.drawImage(personagens.get(0).getSprites()[personagens.get(0).getAparencia()], personagens.get(0).getX(), personagens.get(0).getY(), null);
 		if (multplayer)
-			g.drawImage(personagem2.getSprites()[personagem2.getAparencia()], personagem2.getX(), personagem2.getY(), null);
+			g.drawImage(personagens.get(1).getSprites()[personagens.get(1).getAparencia()], personagens.get(1).getX(), personagens.get(1).getY(), null);
 		else
-			g.drawImage(personagem2.getSprites()[personagem2.getAparencia()], 1000, 1000, null);
+			g.drawImage(personagens.get(1).getSprites()[personagens.get(1).getAparencia()], 1000, 1000, null);
 		g.drawImage(camadaTopo.camada, 0, 0, null);
 		
 		g.setColor(Color.WHITE);
@@ -105,7 +104,7 @@ public class ControlePintura implements Runnable{
 	}
 	
 	public void morrer() {
-		if (personagem.getVida() == 0 || personagem2.getVida() == 0) {
+		if (personagens.get(0).getVida() == 0 || personagens.get(1).getVida() == 0) {
 			thread.stop();
 		}
 	}

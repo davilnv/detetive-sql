@@ -13,7 +13,7 @@ public class Mapa extends JPanel{
 		setSize(512, 512);
 		setLocation(0, 0);
 		
-		fundo = new BufferedImage(Tela.LARGURA, Tela.ALTURA, BufferedImage.TYPE_4BYTE_ABGR);
+		fundo = new BufferedImage(Tela.DEFAULT_WIDTH, Tela.DEFAULT_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
 		graphicsMapa = fundo.getGraphics();
 		
 	}
