@@ -1,5 +1,6 @@
 package br.com.ihm.davilnv.view;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class Tela extends TelaGenerica {
 	private List<Personagem> personagens;
 	
 	public Tela(List<Personagem> personagens) throws IOException {
+		super("");
 		this.personagens = personagens;
 		mapa = new Mapa();
 		inventario = new Inventario(personagens);
@@ -36,4 +38,5 @@ public class Tela extends TelaGenerica {
 	public void setPersonagens(List<Personagem> personagens) {
 		this.personagens = personagens;
 	}
+
 }

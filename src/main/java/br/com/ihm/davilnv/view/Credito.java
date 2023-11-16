@@ -10,22 +10,15 @@ import javax.swing.JPanel;
 
 public class Credito extends TelaGenerica{
 	private JButton voltarButton;
-	private ImageIcon imagem, logoUast;
 	
-	public Credito() {
-		setLayout(null);
-		
-		voltarButton = new JButton("Voltar");
-		voltarButton.setBounds(220, 450, 200, 20);
-		
-		imagem = new ImageIcon(Credito.class.getResource("/res/tituloJogo.png"));
-		logoUast = new ImageIcon(Credito.class.getResource("/res/uast.png"));
-		
-		JPanel panel = new JPanel() {
+	public Credito(String imageBackground) {
+		super(imageBackground);
+
+		defaultPanel = new JPanel() {
 			protected void paintComponent(Graphics g) {
+				g.drawImage(backgroundImage.getImage(), 0, 0, null);
 				g.setColor(Color.LIGHT_GRAY);
 				g.fillRect(0, 0, TelaGenerica.DEFAULT_WIDTH, TelaGenerica.DEFAULT_HEIGHT);
-				g.drawImage(imagem.getImage(), 220, 50, null);
 				g.setColor(Color.BLACK);
 				g.drawRect(15, 110, 610, 300);
 				g.setColor(Color.BLACK);
@@ -38,17 +31,21 @@ public class Credito extends TelaGenerica{
 				g.drawString("Professor: Richarlyson D'Emery", 210, 240);
 				g.drawString("Universidade Federal Rural de Pernambuco - UFRPE", 135, 260);
 				g.drawString("Unidade Acad�mica de Serra Talhada - UAST", 175, 280);
-				g.drawImage(logoUast.getImage(), 245, 300, null);
+//				g.drawImage(logoUast.getImage(), 245, 300, null);
 			}
 		};
-		panel.setBounds(0, 0, TelaGenerica.DEFAULT_WIDTH, TelaGenerica.DEFAULT_HEIGHT);
+		defaultPanel.setBounds(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		
+		voltarButton = new JButton("Voltar");
+		voltarButton.setBounds(220, 450, 200, 20);
 
 		add(voltarButton);
-		add(panel);
+		add(defaultPanel);
 		
 	}
 	
 	public JButton getVoltarButton() {
 		return voltarButton;
 	}
+
 }

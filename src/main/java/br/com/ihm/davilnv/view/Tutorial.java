@@ -4,28 +4,21 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class Ajuda extends TelaGenerica{
+public class Tutorial extends TelaGenerica{
 	
 	private JButton voltarButton;
-	private ImageIcon imagem;
 	
-	public Ajuda() {
-		setLayout(null);
-		
-		voltarButton = new JButton("Voltar");
-		voltarButton.setBounds(220, 480, 200, 20);
-		
-		imagem = new ImageIcon(Ajuda.class.getResource("/res/tituloJogo.png"));
-		
-		JPanel panel = new JPanel() {
+	public Tutorial(String imageBackground) {
+		super(imageBackground);
+
+		defaultPanel = new JPanel() {
 			protected void paintComponent(Graphics g) {
+				g.drawImage(backgroundImage.getImage(), 0, 0, null);
 				g.setColor(Color.LIGHT_GRAY);
 				g.fillRect(0, 0, TelaGenerica.DEFAULT_WIDTH, TelaGenerica.DEFAULT_HEIGHT);
-				g.drawImage(imagem.getImage(), 220, 50, null);
 				g.setColor(Color.BLACK);
 				g.drawRect(15, 110, 610, 250);
 				g.setFont(new Font("Arial", Font.BOLD, 15));
@@ -45,12 +38,15 @@ public class Ajuda extends TelaGenerica{
 				g.drawString("Criado por Davi Lima", 450, 460);
 			}
 		};
-		panel.setBounds(0, 0, TelaGenerica.DEFAULT_WIDTH, TelaGenerica.DEFAULT_HEIGHT);
+		defaultPanel.setBounds(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		
+		voltarButton = new JButton("Voltar");
+		voltarButton.setBounds(220, 480, 200, 20);
 
 		add(voltarButton);
-		add(panel);
+		add(defaultPanel);
 	}
-	
+
 	public JButton getVoltarButton() {
 		return voltarButton;
 	}
