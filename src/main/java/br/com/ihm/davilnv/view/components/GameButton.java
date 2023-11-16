@@ -1,6 +1,6 @@
 package br.com.ihm.davilnv.view.components;
 
-import br.com.ihm.davilnv.view.TelaGenerica;
+import br.com.ihm.davilnv.view.BaseFrame;
 
 import javax.swing.*;
 import java.util.Objects;
@@ -12,12 +12,12 @@ public class GameButton extends JButton {
     public GameButton(String key, int marginBottom, int marginLeft, int width, int height) {
         this.key = key;
         setBounds(
-                ((TelaGenerica.DEFAULT_WIDTH - isZero(width, TelaGenerica.DEFAULT_WIDTH_BUTTON)) / 2) + marginLeft,
-                ((TelaGenerica.DEFAULT_HEIGHT - isZero(height, TelaGenerica.DEFAULT_HEIGHT_BUTTON)) / 2) + marginBottom,
-                isZero(width, TelaGenerica.DEFAULT_WIDTH_BUTTON),
-                isZero(height, TelaGenerica.DEFAULT_HEIGHT_BUTTON)
+                ((BaseFrame.DEFAULT_WIDTH - isZero(width, BaseFrame.DEFAULT_WIDTH_BUTTON)) / 2) + marginLeft,
+                ((BaseFrame.DEFAULT_HEIGHT - isZero(height, BaseFrame.DEFAULT_HEIGHT_BUTTON)) / 2) + marginBottom,
+                isZero(width, BaseFrame.DEFAULT_WIDTH_BUTTON),
+                isZero(height, BaseFrame.DEFAULT_HEIGHT_BUTTON)
         );
-        setIcon(new ImageIcon(Objects.requireNonNull(GameButton.class.getResource(TelaGenerica.DEFAULT_BUTTONS_PATH + "btn-" + key + ".png"))));
+        setIcon(new ImageIcon(Objects.requireNonNull(GameButton.class.getResource(BaseFrame.DEFAULT_BUTTONS_PATH + "btn-" + key + ".png"))));
     }
 
     public String getKey() {

@@ -2,11 +2,10 @@ package br.com.ihm.davilnv.app;
 
 import java.io.IOException;
 
-import br.com.ihm.davilnv.controller.ControleTelas;
-import br.com.ihm.davilnv.view.Menu;
+import br.com.ihm.davilnv.controller.FrameController;
 
 public class App {
     public static void main(String[] args) throws IOException {
-        new ControleTelas();
+        new FrameController();
     }
 }

@@ -1,14 +1,11 @@
 package br.com.ihm.davilnv.view;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-import javax.swing.JFrame;
-
 import br.com.ihm.davilnv.model.Personagem;
 
-public class Tela extends TelaGenerica {
+public class Tela extends BaseFrame {
 	private Mapa mapa;
 	private Inventario inventario;
 	private List<Personagem> personagens;
