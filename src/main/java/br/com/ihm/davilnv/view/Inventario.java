@@ -54,7 +54,7 @@ public class Inventario extends JPanel{
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.BOLD, 12));
 		g.drawString("Inventário", 553, 15);
-		g.drawLine(514, 17, Tela.DEFAULT_WIDTH, 17);
+		g.drawLine(514, 17, BaseFrame.DEFAULT_WIDTH, 17);
 	}
 	
 	public void singlePlayer(Graphics g) throws ViewException, IOException {
@@ -67,7 +67,7 @@ public class Inventario extends JPanel{
 	public void multiPlayer(Graphics g) throws IOException {
 
 		drawInventorySection(g);
-		g.drawLine(514, Tela.DEFAULT_HEIGHT /2, Tela.DEFAULT_WIDTH, Tela.DEFAULT_HEIGHT /2);
+		g.drawLine(514, BaseFrame.DEFAULT_HEIGHT /2, BaseFrame.DEFAULT_WIDTH, BaseFrame.DEFAULT_HEIGHT /2);
 		for (InventoryInfo info : InventoryInfos.getMultiInventoryInfos(personagens)) {
 			info.draw(g);
 		}

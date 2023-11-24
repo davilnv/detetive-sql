@@ -14,6 +14,7 @@ public class MainFrame extends BaseFrame {
 		panels.add(new RankingPanel("ranking", "/assets/images/background/background-frames-ranking.png"));
 		panels.add(new HelpPanel("help", "/assets/images/background/background-frames-tutorial.png"));
 		panels.add(new CreditPanel("credit", "/assets/images/background/background-frames-creditos.png"));
+		panels.add(new MapPanel("map"));
 
 		buttons.add(new GameButton("jogar", 0, 0, 0,0));
 		buttons.add(new GameButton("ranking", 80, 0, 0,0));

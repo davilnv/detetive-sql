@@ -18,11 +18,24 @@ public abstract class BasePanel extends JPanel{
 		setLayout(null);
 
 		backgroundImage = new ImageIcon(Objects.requireNonNull(BaseFrame.class.getResource(imagePath)));
-		buffBackground = new BufferedImage(Tela.DEFAULT_WIDTH, Tela.DEFAULT_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
+		buffBackground = new BufferedImage(BaseFrame.DEFAULT_WIDTH, BaseFrame.DEFAULT_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
 		graphics = buffBackground.getGraphics();
-		
+
+		setVisible(false);
 	}
-	
+
+	public BasePanel(String key) {
+		this.key = key;
+		setSize(BaseFrame.DEFAULT_WIDTH, BaseFrame.DEFAULT_HEIGHT);
+		setLocation(0, 0);
+		setLayout(null);
+
+		buffBackground = new BufferedImage(BaseFrame.DEFAULT_WIDTH, BaseFrame.DEFAULT_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
+		graphics = buffBackground.getGraphics();
+
+		setVisible(false);
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

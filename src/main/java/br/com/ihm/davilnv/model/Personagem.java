@@ -8,15 +8,11 @@ import java.util.List;
 import br.com.ihm.davilnv.controller.ControlePintura;
 
 public class Personagem extends Sprite {
-    private Inimigo[] inimigo;
-    private Inimigo resultado;
     private int vida;
     private int pontos;
 
-    public Personagem(Inimigo[] inimigo, Inimigo resultado, int aparencia, int largura, int altura, int colunas, int linhas, int x, int y, String endereco) {
+    public Personagem(int aparencia, int largura, int altura, int colunas, int linhas, int x, int y, String endereco) {
         super(aparencia, largura, altura, colunas, linhas, x, y, endereco);
-        this.inimigo = inimigo;
-        this.resultado = resultado;
         vida = 100;
     }
 
@@ -74,23 +70,23 @@ public class Personagem extends Sprite {
         }
     }
 
-    public boolean colisaoResultado() {
-        Rectangle personagem = new Rectangle(getX()+10, getY()+10,
-                getLarguraPersonagem()-10, getAlturaPersonagem()-10);
-        Rectangle inimigoResultado = new Rectangle(resultado.getX(), resultado.getY(),
-                resultado.getLargura(), resultado.getAltura());
-        if(personagem.intersects(inimigoResultado))
-            return true;
-        return false;
-    }
+//    public boolean colisaoResultado() {
+//        Rectangle personagem = new Rectangle(getX()+10, getY()+10,
+//                getLarguraPersonagem()-10, getAlturaPersonagem()-10);
+//        Rectangle inimigoResultado = new Rectangle(resultado.getX(), resultado.getY(),
+//                resultado.getLargura(), resultado.getAltura());
+//        if(personagem.intersects(inimigoResultado))
+//            return true;
+//        return false;
+//    }
 
     public boolean colisao() {
         Rectangle personagem = new Rectangle(getX()+10, getY()+10,
                 getLarguraPersonagem()-10, getAlturaPersonagem()-10);
         List<Rectangle> tmp = new ArrayList<Rectangle>();
-        for (Inimigo enemy : inimigo) {
-            tmp.add(new Rectangle(enemy.getX(), enemy.getY(), enemy.getLargura(), enemy.getAltura()));
-        }
+//        for (Inimigo enemy : inimigo) {
+//            tmp.add(new Rectangle(enemy.getX(), enemy.getY(), enemy.getLargura(), enemy.getAltura()));
+//        }
         for(Rectangle rectangle : tmp) {
             if(rectangle.intersects(personagem)){
                 return true;
@@ -138,20 +134,6 @@ public class Personagem extends Sprite {
     public void setY(int y) {
         if(!colisao(ControlePintura.colisao, 0, y-getY()) && !colisao())
             super.setY(y);
-    }
-
-
-
-    public Inimigo[] getInimigo() {
-        return inimigo;
-    }
-
-    public Inimigo getResultado() {
-        return resultado;
-    }
-
-    public void setInimigo(Inimigo[] inimigo) {
-        this.inimigo = inimigo;
     }
 
     public int getVida() {

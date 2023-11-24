@@ -5,7 +5,6 @@ import java.awt.event.KeyListener;
 import java.util.List;
 
 import br.com.ihm.davilnv.model.Personagem;
-import br.com.ihm.davilnv.view.Mapa;
 
 public class ControlePersonagem extends Thread implements KeyListener {
 
@@ -27,9 +26,9 @@ public class ControlePersonagem extends Thread implements KeyListener {
 		while(true) {
 			try {
 				personagens.get(0).mover(direcao);
-				personagens.get(1).mover(direcao2);
+//				personagens.get(1).mover(direcao2);
 				personagens.get(0).perderVida();
-				personagens.get(1).perderVida();
+//				personagens.get(1).perderVida();
 				Thread.sleep(40);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -47,15 +46,19 @@ public class ControlePersonagem extends Thread implements KeyListener {
 		switch (codigo) {
 		case KeyEvent.VK_UP:
 			direcao = "cima";
+			System.out.println(direcao);
 			break;
 		case KeyEvent.VK_DOWN:
 			direcao = "baixo";
+			System.out.println(direcao);
 			break;
 		case KeyEvent.VK_LEFT:
 			direcao = "esquerda";
+			System.out.println(direcao);
 			break;
 		case KeyEvent.VK_RIGHT:
 			direcao = "direita";
+			System.out.println(direcao);
 			break;
 		case KeyEvent.VK_W:
 			direcao2 = "cima";

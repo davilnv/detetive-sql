@@ -6,6 +6,7 @@ public class MenuPanel extends BasePanel {
 	public MenuPanel(String key, String imageBackground){
 		super(key, imageBackground);
 
+		setVisible(true);
 	}
 
 	@Override
