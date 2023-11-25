@@ -9,15 +9,13 @@ public class Logica {
     private List<Camada> camadas;
     private boolean ganhou;
 
-    public Logica(List<Personagem> personagens) {
-        this.personagens = personagens;
-
+    public Logica() {
         camadas = new ArrayList<Camada>();
-        camadas.add(new Camada("floor", 40, 60, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/floor.txt"));
-        camadas.add(new Camada("second-floor", 40, 60, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/second-floor.txt"));
-        camadas.add(new Camada("colision", 40, 60, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/colision.txt"));
-        camadas.add(new Camada("top", 40, 60, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/top.txt"));
-        camadas.add(new Camada("front-top", 40, 60, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/front-top.txt"));
+        camadas.add(new Camada("floor", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/floor.txt"));
+        camadas.add(new Camada("second-floor", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/second-floor.txt"));
+        camadas.add(new Camada("colision", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/colision.txt"));
+        camadas.add(new Camada("top", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/top.txt"));
+        camadas.add(new Camada("front-top", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/front-top.txt"));
 
 //		camadaFundo = Camadas.fase1()[0];
 //		camadaColisao = Camadas.fase1()[1];
@@ -120,5 +118,14 @@ public class Logica {
 
     public List<Camada> getCamadas() {
         return camadas;
+    }
+
+    public Camada getCamada(String key) {
+        for (Camada camada : camadas) {
+            if (camada.getKey().equals(key)) {
+                return camada;
+            }
+        }
+        return null;
     }
 }

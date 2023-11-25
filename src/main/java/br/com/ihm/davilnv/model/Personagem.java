@@ -5,8 +5,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ihm.davilnv.controller.ControlePintura;
-
 public class Personagem extends Sprite {
     private int vida;
     private int pontos;
@@ -121,19 +119,6 @@ public class Personagem extends Sprite {
         setLocale(posX, posY);
         vida = 100;
         pontos = 0;
-    }
-
-    @Override
-    public void setX(int x) {
-        if(!colisao(ControlePintura.colisao, x-getX(), 0) && !colisao())
-            super.setX(x);
-
-    }
-
-    @Override
-    public void setY(int y) {
-        if(!colisao(ControlePintura.colisao, 0, y-getY()) && !colisao())
-            super.setY(y);
     }
 
     public int getVida() {

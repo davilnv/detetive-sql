@@ -27,7 +27,7 @@ public class Camada {
         this.mapaHeight = mapaHeight;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        mapa = new int[mapaWidth][mapaHeight];
+        mapa = new int[mapaHeight][mapaWidth];
         mapa = carregaMatriz(mapa, arquivo);
         try {
             tileSet = ImageIO.read(Objects.requireNonNull(Camada.class.getResourceAsStream(img)));
@@ -82,8 +82,8 @@ public class Camada {
         int colunasTileSet = tileSet.getWidth() / tileWidth;
 //		System.out.println(colunasTileSet);
 
-        for (int i = 0; i < mapaWidth; i++) {
-            for (int j = 0; j < mapaHeight; j++) {
+        for (int i = 0; i < mapaHeight; i++) {
+            for (int j = 0; j < mapaWidth; j++) {
                 tile = (mapa[i][j] != 0) ? (mapa[i][j] - 1) : 16;
                 tileRow = (tile / (colunasTileSet)) | 0;
                 tileCol = (tile % (colunasTileSet)) | 0;
@@ -116,4 +116,14 @@ public class Camada {
     public String getKey() {
         return key;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Camada) {
+            Camada tmp = (Camada) obj;
+            return tmp.getKey().equals(this.getKey());
+        }
+        return false;
+    }
+
 }

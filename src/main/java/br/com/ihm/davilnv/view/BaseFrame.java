@@ -48,8 +48,10 @@ public abstract class BaseFrame extends JFrame{
 		backgroundImage = new ImageIcon(Objects.requireNonNull(BaseFrame.class.getResource(imagePath)));
 
 		setUndecorated(true);
+		setLocation(0, 0);
+//		setExtendedState(JFrame.MAXIMIZED_VERT);
+//		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(false);
-		setLocationRelativeTo(null);
 	}
 
 	public JButton getButtonByKey(String key) {
