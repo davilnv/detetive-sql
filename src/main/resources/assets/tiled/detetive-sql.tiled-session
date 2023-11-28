@@ -9,11 +9,11 @@
     ],
     "fileStates": {
         "mapa.tmx": {
-            "scale": 0.33,
-            "selectedLayer": 1,
+            "scale": 0.5,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 174.24242424242425,
-                "y": 330.30303030303025
+                "x": 737,
+                "y": 528
             }
         },
         "tiled.tsx": {
@@ -21,18 +21,17 @@
             "scaleInEditor": 1
         }
     },
-    "last.imagePath": "/home/davineves/davilnv/Documentos/UFRPE/UFRPE-UAST - 2023.1 (2023)/IHM - Interface Homem Máquina/detetive-sql/src/main/resources/assets/tiles",
+    "last.imagePath": "/home/davineves/davilnv/Documentos/UFRPE/UFRPE-UAST - 2023.1 (2023)/IHM - Interface Homem Máquina/detetive-sql/src/main/resources/assets/tiled",
     "map.height": 40,
     "map.lastUsedFormat": "tmx",
     "map.width": 60,
     "openFiles": [
-        "mapa.tmx",
-        "tiled.tsx"
+        "mapa.tmx"
     ],
     "project": "detetive-sql.tiled-project",
     "recentFiles": [
-        "tiled.tsx",
-        "mapa.tmx"
+        "mapa.tmx",
+        "tiled.tsx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

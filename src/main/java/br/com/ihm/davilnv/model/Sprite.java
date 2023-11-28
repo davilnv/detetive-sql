@@ -82,13 +82,14 @@ public abstract class Sprite {
              */
             for (int i = 0; i < colunas; i++) {
                 for (int j = 0; j < linhas; j++) {
-                    sprites[(i * linhas) + j] = personagem.getSubimage(i * (largura/colunas),
-                            j * (altura/linhas), largura/colunas, altura/linhas);
+//                    sprites[(i * linhas) + j] = personagem.getSubimage(i * (largura/colunas),
+//                            j * (altura/linhas), largura/colunas, altura/linhas);
+                    sprites[(i * linhas) + j] = personagem.getSubimage(i * largura, j * altura, largura, altura);
                 }
             }
         } catch (IOException e) {
+            System.out.println("Não foi possivel carregar a Sprite");
             e.printStackTrace();
-            System.out.println("Nao foi possivel carregar a Sprite");
         }
 
         larguraPersonagem = sprites[0].getWidth();

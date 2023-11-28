@@ -27,7 +27,7 @@ public class Camada {
         this.mapaHeight = mapaHeight;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        mapa = new int[mapaWidth][mapaHeight];
+        mapa = new int[mapaHeight][mapaWidth];
         mapa = carregaMatriz(mapa, arquivo);
         try {
             tileSet = ImageIO.read(Objects.requireNonNull(Camada.class.getResourceAsStream(img)));
@@ -82,8 +82,8 @@ public class Camada {
         int colunasTileSet = tileSet.getWidth() / tileWidth;
 //		System.out.println(colunasTileSet);
 
-        for (int i = 0; i < mapaWidth; i++) {
-            for (int j = 0; j < mapaHeight; j++) {
+        for (int i = 0; i < mapaHeight; i++) {
+            for (int j = 0; j < mapaWidth; j++) {
                 tile = (mapa[i][j] != 0) ? (mapa[i][j] - 1) : 16;
                 tileRow = (tile / (colunasTileSet)) | 0;
                 tileCol = (tile % (colunasTileSet)) | 0;
@@ -99,21 +99,27 @@ public class Camada {
      */
     public List<Rectangle> montarColisao() {
         List<Rectangle> tmp = new ArrayList<Rectangle>();
-        for (int i = 0; i < mapaWidth; i++) {
-            for (int j = 0; j < mapaHeight; j++) {
+        for (int i = 0; i < mapaHeight; i++) {
+            for (int j = 0; j < mapaWidth; j++) {
                 if (mapa[i][j] != 0) {
-                    tmp.add(new Rectangle((j * tileHeight), (i * tileWidth), tileWidth - 5, tileHeight - 5));
+                    tmp.add(new Rectangle((j * tileHeight), (i * tileWidth), tileWidth, tileHeight));
                 }
             }
         }
-        tmp.add(new Rectangle(0, 0, 513, 1)); // topo
-        tmp.add(new Rectangle(0, 512, 513, 1)); // baixo
-        tmp.add(new Rectangle(0, 0, 1, 513)); // esquerda
-        tmp.add(new Rectangle(513, 0, 1, 513)); // direita
         return tmp;
     }
 
     public String getKey() {
         return key;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Camada) {
+            Camada tmp = (Camada) obj;
+            return tmp.getKey().equals(this.getKey());
+        }
+        return false;
+    }
+
 }

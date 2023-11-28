@@ -17,8 +17,6 @@ public class MenuPanel extends BasePanel {
 		g.setColor(Color.WHITE);
 		g.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 20));
 		g.drawString("Versão: 1.0 - Criado por Davi Lima", 20, BaseFrame.DEFAULT_HEIGHT - 20);
-
-		g.dispose();
 	}
 
 }

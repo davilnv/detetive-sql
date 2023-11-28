@@ -30,7 +30,7 @@ public class HelpPanel extends BasePanel {
 		g.drawString("    -> Ganhou: O jogador conseguiu alcan�ar 30 pontos e conseguiu ganhar o jogo, ", 20, 330);
 		g.drawString("       para reiniciar apertar o bot�o sair", 20, 350);
 		g.drawString("Criado por Davi Lima", 450, 460);
-		g.dispose();
+//		g.dispose();
 	}
 
 }
