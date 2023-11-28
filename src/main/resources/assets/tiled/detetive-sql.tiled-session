@@ -12,12 +12,12 @@
             "scale": 0.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 737,
-                "y": 528
+                "x": 716,
+                "y": 876
             }
         },
         "tiled.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 1.5,
             "scaleInEditor": 1
         }
     },
