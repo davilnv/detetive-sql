@@ -9,8 +9,10 @@ import java.io.IOException;
 import br.com.ihm.davilnv.model.Camada;
 import br.com.ihm.davilnv.model.Logica;
 import br.com.ihm.davilnv.model.Personagem;
+import br.com.ihm.davilnv.statics.MP3Player;
 import br.com.ihm.davilnv.view.*;
 import br.com.ihm.davilnv.view.components.GameButton;
+import javazoom.jl.decoder.JavaLayerException;
 
 import javax.swing.*;
 
@@ -18,26 +20,41 @@ public class GameController extends KeyAdapter implements ActionListener {
     MainFrame mainFrame;
     MapPanel mapPanel;
     Logica logica;
-
     Personagem personagem;
+    MP3Player introGamePlayer;
     static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1]; // TODO : Mudar para monitor 0
-
     public static java.util.List<Rectangle> colisao;
-
     boolean cima, baixo, direita, esquerda;
     int up, down, left, right;
 
-    public GameController() throws IOException {
+    public GameController() throws IOException, JavaLayerException {
 
-        createAndShowGUI();
-//        SwingUtilities.invokeLater(() -> {
-//            try {
-//                createAndShowGUI();
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        });
+        // Inicia a reprodução da música em uma thread separada
+        Thread musicThread = new Thread(() -> {
+            try {
+                introGamePlayer = new MP3Player("/assets/audios/duck-dodgers-theme-song.mp3");
+                introGamePlayer.playMp3InLoop();
+            } catch (IOException | JavaLayerException e) {
+                e.printStackTrace();
+            }
+        });
+        musicThread.start();
 
+        // Inicia a interface gráfica em outra thread
+        SwingUtilities.invokeLater(() -> {
+            try {
+                createAndShowGUI();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Aguarde a conclusão da reprodução da música
+        try {
+            musicThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -64,7 +81,6 @@ public class GameController extends KeyAdapter implements ActionListener {
         mapPanel.setLogica(logica);
         mapPanel.setPersonagem(personagem);
         colisao = logica.getCamada("colision").montarColisao();
-
         run();
     }
 
@@ -115,6 +131,9 @@ public class GameController extends KeyAdapter implements ActionListener {
             worker.execute();
         }
 		// Menu Buttons
+        if (mainFrame.getButtonByKey("config") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("menu")) {
+            mainFrame.disableMenuComponents("config");
+        }
         if (mainFrame.getButtonByKey("jogar") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("menu")) {
             mainFrame.disableMenuComponents("start");
             mainFrame.getButtonByKey("jogar").setVisible(true); // TODO: remove this line
@@ -132,6 +151,9 @@ public class GameController extends KeyAdapter implements ActionListener {
             System.exit(0);
         }
 //		// Voltar
+        if (mainFrame.getButtonByKey("seta-voltar") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("config")) {
+            mainFrame.enableMenuComponents("config");
+        }
         if (mainFrame.getButtonByKey("seta-voltar") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("start")) {
             mainFrame.enableMenuComponents("start");
         }
