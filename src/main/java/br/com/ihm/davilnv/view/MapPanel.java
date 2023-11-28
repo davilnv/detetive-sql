@@ -1,5 +1,6 @@
 package br.com.ihm.davilnv.view;
 
+import br.com.ihm.davilnv.controller.GameController;
 import br.com.ihm.davilnv.model.Camada;
 import br.com.ihm.davilnv.model.Logica;
 import br.com.ihm.davilnv.model.Personagem;
@@ -19,20 +20,27 @@ public class MapPanel extends BasePanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
+//
 		g.drawImage(logica.getCamada("floor").camada, 0, 0, null);
 		g.drawImage(logica.getCamada("second-floor").camada, 0, 0, null);
 		g.drawImage(logica.getCamada("colision").camada, 0, 0, null);
 
+		showColisionRectangle(g);
+
 		g.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
-//		if (multplayer)
-//			g.drawImage(personagens.get(1).getSprites()[personagens.get(1).getAparencia()], personagens.get(1).getX(), personagens.get(1).getY(), null);
-//		else
-//			g.drawImage(personagens.get(1).getSprites()[personagens.get(1).getAparencia()], 1000, 1000, null);
 		g.drawImage(logica.getCamada("top").camada, 0, 0, null);
 		g.drawImage(logica.getCamada("front-top").camada, 0, 0, null);
 
-		g.dispose();
+
+//		g.dispose();
+	}
+
+	private void showColisionRectangle(Graphics g) {
+		g.setColor(Color.RED); // Cor dos retângulos
+		for (Rectangle collisionRect : GameController.colisao) {
+			g.drawRect(collisionRect.x, collisionRect.y, collisionRect.width, collisionRect.height);
+		}
+		g.drawRect(personagem.getX()-Personagem.DIFF_COLISAO, personagem.getY()-Personagem.DIFF_COLISAO, personagem.getLarguraPersonagem()+(Personagem.DIFF_COLISAO*2), personagem.getAlturaPersonagem()+Personagem.DIFF_COLISAO);
 	}
 
 

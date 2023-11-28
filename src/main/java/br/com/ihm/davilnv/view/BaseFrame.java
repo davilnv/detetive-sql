@@ -32,20 +32,14 @@ public abstract class BaseFrame extends JFrame{
 		}
 	}
 
-	public JPanel defaultPanel;
-
 	public List<BasePanel> panels;
 	public List<GameButton> buttons;
 
-	public ImageIcon backgroundImage;
-
-	public BaseFrame(String imagePath) {
+	public BaseFrame() {
 		panels = new ArrayList<>();
 		buttons = new ArrayList<>();
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setLayout(null);
-
-		backgroundImage = new ImageIcon(Objects.requireNonNull(BaseFrame.class.getResource(imagePath)));
 
 		setUndecorated(true);
 		setLocation(0, 0);

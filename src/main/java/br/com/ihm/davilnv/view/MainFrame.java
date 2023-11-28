@@ -7,13 +7,14 @@ import java.io.IOException;
 public class MainFrame extends BaseFrame {
 
 	public MainFrame() throws IOException {
-		super("");
+		super();
 
 		panels.add(new MenuPanel("menu", "/assets/images/background/background-frames-menu.png"));
 		panels.add(new StartPanel("start", "/assets/images/background/background-frames-inicio.png"));
 		panels.add(new RankingPanel("ranking", "/assets/images/background/background-frames-ranking.png"));
 		panels.add(new HelpPanel("help", "/assets/images/background/background-frames-tutorial.png"));
 		panels.add(new CreditPanel("credit", "/assets/images/background/background-frames-creditos.png"));
+		panels.add(new LoadingPanel("loading", "/assets/images/background/background-frames.png"));
 		panels.add(new MapPanel("map"));
 
 		buttons.add(new GameButton("jogar", 0, 0, 0,0));
