@@ -5,8 +5,6 @@ import java.awt.*;
 public class ConfigPanel extends BasePanel {
 	public ConfigPanel(String key, String imageBackground){
 		super(key, imageBackground);
-
-		setVisible(true);
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class MapPanel extends BasePanel {
 		g.drawImage(logica.getCamada("second-floor").camada, 0, 0, null);
 		g.drawImage(logica.getCamada("colision").camada, 0, 0, null);
 
-		showColisionRectangle(g);
+//		showColisionRectangle(g);
 
 		g.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
 		g.drawImage(logica.getCamada("top").camada, 0, 0, null);

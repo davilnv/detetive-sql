@@ -27,7 +27,7 @@ public class GameController extends KeyAdapter implements ActionListener {
     boolean cima, baixo, direita, esquerda;
     int up, down, left, right;
 
-    public GameController() throws IOException, JavaLayerException {
+    public GameController() {
 
         // Inicia a reprodução da música em uma thread separada
         Thread musicThread = new Thread(() -> {
@@ -112,6 +112,10 @@ public class GameController extends KeyAdapter implements ActionListener {
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
                 @Override
                 protected Void doInBackground() throws Exception {
+                    mainFrame.getPanelByKey("start").setVisible(false);
+                    mainFrame.getPanelByKey("loading").setVisible(true);
+                    mainFrame.getButtonByKey("jogar").setVisible(false);
+                    mainFrame.getButtonByKey("seta-voltar").setVisible(false);
                     iniciarJogo();
                     Thread.sleep(8600);
                     return null;
@@ -123,20 +127,15 @@ public class GameController extends KeyAdapter implements ActionListener {
                 }
             };
 
-            mainFrame.getPanelByKey("start").setVisible(false);
-            mainFrame.getPanelByKey("loading").setVisible(true);
-            mainFrame.getButtonByKey("jogar").setVisible(false);
-            mainFrame.getButtonByKey("seta-voltar").setVisible(false);
-
             worker.execute();
         }
 		// Menu Buttons
-        if (mainFrame.getButtonByKey("config") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("menu")) {
-            mainFrame.disableMenuComponents("config");
-        }
         if (mainFrame.getButtonByKey("jogar") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("menu")) {
             mainFrame.disableMenuComponents("start");
             mainFrame.getButtonByKey("jogar").setVisible(true); // TODO: remove this line
+        }
+        if (mainFrame.getButtonByKey("config") == e.getSource()) {
+            mainFrame.disableMenuComponents("config");
         }
         if (mainFrame.getButtonByKey("ranking") == e.getSource()) {
             mainFrame.disableMenuComponents("ranking");
