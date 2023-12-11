@@ -6,7 +6,7 @@ import javazoom.jl.decoder.JavaLayerException;
 import java.io.IOException;
 
 public class App {
-    public static void main(String[] args) throws IOException, JavaLayerException {
+    public static void main(String[] args) {
         new GameController();
     }
 }

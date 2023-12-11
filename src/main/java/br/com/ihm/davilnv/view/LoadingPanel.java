@@ -12,7 +12,7 @@ public class LoadingPanel extends BasePanel {
 	public LoadingPanel(String key, String imageBackground) {
 		super(key, imageBackground);
 		setLayout(null);
-		loadingGif = new ImageIcon(Objects.requireNonNull(BaseFrame.class.getResource("/assets/images/dog.gif")));
+		loadingGif = new ImageIcon(Objects.requireNonNull(LoadingPanel.class.getResource("/assets/images/dog.gif")));
 		loadingLabel = new JLabel(loadingGif);
 		loadingLabel.setBounds(550, 407, BaseFrame.DEFAULT_WIDTH, BaseFrame.DEFAULT_HEIGHT);
 

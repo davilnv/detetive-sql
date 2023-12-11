@@ -6,7 +6,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+
 import br.com.ihm.davilnv.model.Camada;
+import br.com.ihm.davilnv.model.GameLoop;
 import br.com.ihm.davilnv.model.Logica;
 import br.com.ihm.davilnv.model.Personagem;
 import br.com.ihm.davilnv.statics.MP3Player;
@@ -17,17 +19,18 @@ import javazoom.jl.decoder.JavaLayerException;
 import javax.swing.*;
 
 public class GameController extends KeyAdapter implements ActionListener {
-    MainFrame mainFrame;
-    MapPanel mapPanel;
-    Logica logica;
-    Personagem personagem;
-    MP3Player introGamePlayer;
-    static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1]; // TODO : Mudar para monitor 0
+    private MainFrame mainFrame;
+    private MapPanel mapPanel;
+    private Logica logica;
+    private Personagem personagem;
+    private MP3Player introGamePlayer;
+    private static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1]; // TODO : Mudar para monitor 0
+    private static final int TARGET_FPS = 60;
     public static java.util.List<Rectangle> colisao;
-    boolean cima, baixo, direita, esquerda;
-    int up, down, left, right;
+    private boolean cima, baixo, direita, esquerda;
+    private int up, down, left, right;
 
-    public GameController() throws IOException, JavaLayerException {
+    public GameController() {
 
         // Inicia a reprodução da música em uma thread separada
         Thread musicThread = new Thread(() -> {
@@ -85,22 +88,15 @@ public class GameController extends KeyAdapter implements ActionListener {
     }
 
     public void montarMapa() {
-		for (Camada camada : logica.getCamadas()) {
-			camada.montarMapa();
-		}
+        for (Camada camada : logica.getCamadas()) {
+            camada.montarMapa();
+        }
     }
 
 
     public void run() {
-        Timer timer = new Timer(16, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                montarMapa();
-                mapPanel.repaint();
-            }
-        });
-
-        timer.start();
+            GameLoop gameLoop = new GameLoop(TARGET_FPS, this);
+            gameLoop.start();
     }
 
     @Override
@@ -112,10 +108,15 @@ public class GameController extends KeyAdapter implements ActionListener {
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
                 @Override
                 protected Void doInBackground() throws Exception {
+                    mainFrame.getPanelByKey("start").setVisible(false);
+                    mainFrame.getPanelByKey("loading").setVisible(true);
+                    mainFrame.getButtonByKey("jogar").setVisible(false);
+                    mainFrame.getButtonByKey("seta-voltar").setVisible(false);
                     iniciarJogo();
                     Thread.sleep(8600);
                     return null;
                 }
+
                 @Override
                 protected void done() {
                     mainFrame.getPanelByKey("loading").setVisible(false);
@@ -123,20 +124,15 @@ public class GameController extends KeyAdapter implements ActionListener {
                 }
             };
 
-            mainFrame.getPanelByKey("start").setVisible(false);
-            mainFrame.getPanelByKey("loading").setVisible(true);
-            mainFrame.getButtonByKey("jogar").setVisible(false);
-            mainFrame.getButtonByKey("seta-voltar").setVisible(false);
-
             worker.execute();
         }
-		// Menu Buttons
-        if (mainFrame.getButtonByKey("config") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("menu")) {
-            mainFrame.disableMenuComponents("config");
-        }
+        // Menu Buttons
         if (mainFrame.getButtonByKey("jogar") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("menu")) {
             mainFrame.disableMenuComponents("start");
             mainFrame.getButtonByKey("jogar").setVisible(true); // TODO: remove this line
+        }
+        if (mainFrame.getButtonByKey("config") == e.getSource()) {
+            mainFrame.disableMenuComponents("config");
         }
         if (mainFrame.getButtonByKey("ranking") == e.getSource()) {
             mainFrame.disableMenuComponents("ranking");
@@ -295,7 +291,7 @@ public class GameController extends KeyAdapter implements ActionListener {
         if (direita) {
             int xL = personagem.getX();
             int yL = personagem.getY();
-            if (xL < 1856-Personagem.DIFF_COLISAO) {
+            if (xL < 1856 - Personagem.DIFF_COLISAO) {
                 personagem.setX(xL + Personagem.VELOCIDADE);
                 personagem.setY(yL);
                 switch (right) {
@@ -343,7 +339,7 @@ public class GameController extends KeyAdapter implements ActionListener {
         if (baixo) {
             int xL = personagem.getX();
             int yL = personagem.getY();
-            if (yL < 1016-Personagem.DIFF_COLISAO) {
+            if (yL < 1016 - Personagem.DIFF_COLISAO) {
                 personagem.setX(xL);
                 personagem.setY(yL + Personagem.VELOCIDADE);
                 switch (down) {
@@ -389,6 +385,10 @@ public class GameController extends KeyAdapter implements ActionListener {
 
             }
         }
+    }
+
+    public MapPanel getMapPanel() {
+        return mapPanel;
     }
 
 }
