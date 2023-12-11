@@ -35,6 +35,7 @@ public class MainFrame extends BaseFrame {
 			add(panel);
 		}
 
+		setIgnoreRepaint(true);
 		setVisible(true);
 		
 	}
