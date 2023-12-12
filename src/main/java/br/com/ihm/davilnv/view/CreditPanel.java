@@ -1,31 +1,42 @@
 package br.com.ihm.davilnv.view;
 
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
+
+import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.Objects;
 
 public class CreditPanel extends BasePanel {
 	public CreditPanel(String key, String imageBackground) {
 		super(key, imageBackground);
+		setLayout(null);
+		initTutorialTextAreaV2();
 	}
+
+	private void initTutorialTextAreaV2() {
+		final JFXPanel fxPanel = new JFXPanel();
+		fxPanel.setBounds(100, 275, BaseFrame.DEFAULT_WIDTH - 200, BaseFrame.DEFAULT_HEIGHT - 375);
+		fxPanel.setBorder(new LineBorder(Color.BLACK, 1));
+		this.add(fxPanel);
+
+		Platform.runLater(() -> {
+			WebView webView = new WebView();
+			webView.getEngine().load(
+					Objects.requireNonNull(HelpPanel.class.getResource("/assets/files/credit-text.html")).toExternalForm()
+			);
+
+			fxPanel.setScene(new Scene(webView));
+		});
+	}
+
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(backgroundImage.getImage(), 0, 0, null);
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(0, 0, BaseFrame.DEFAULT_WIDTH, BaseFrame.DEFAULT_HEIGHT);
-		g.setColor(Color.BLACK);
-		g.drawRect(15, 110, 610, 300);
-		g.setColor(Color.BLACK);
-		g.setFont(new Font("Arial", Font.BOLD, 30));
-		g.drawString("Cr�ditos", 255, 150);
-		g.setFont(new Font("Arial", Font.BOLD, 15));
-		g.drawString("Jogo criado por: Davi de Lima das Neves", 175, 180);
-		g.drawString("Projeto criado para a disciplina", 210, 200);
-		g.drawString("Modelagem e Programa��o Orientada a Objetos (MPOO)", 125, 220);
-		g.drawString("Professor: Richarlyson D'Emery", 210, 240);
-		g.drawString("Universidade Federal Rural de Pernambuco - UFRPE", 135, 260);
-		g.drawString("Unidade Acad�mica de Serra Talhada - UAST", 175, 280);
-//		g.dispose();
 	}
 
 }

@@ -1,10 +1,7 @@
 package br.com.ihm.davilnv.view;
 
 import br.com.ihm.davilnv.controller.GameController;
-import br.com.ihm.davilnv.model.Camada;
-import br.com.ihm.davilnv.model.GameLoop;
-import br.com.ihm.davilnv.model.Logica;
-import br.com.ihm.davilnv.model.Personagem;
+import br.com.ihm.davilnv.model.*;
 
 import java.awt.*;
 import java.util.List;
@@ -41,6 +38,10 @@ public class MapPanel extends BasePanel {
 		g2d.drawImage(logica.getCamada("second-floor").camada, 0, 0, null);
 		g2d.drawImage(logica.getCamada("colision").camada, 0, 0, null);
 
+		for (NPC npc : logica.getNpcs()) {
+			g2d.drawImage(npc.getSprites()[npc.getAparencia()], npc.getX(), npc.getY(), null);
+		}
+
 		g2d.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
 		g2d.drawImage(logica.getCamada("top").camada, 0, 0, null);
 		g2d.drawImage(logica.getCamada("front-top").camada, 0, 0, null);
@@ -48,7 +49,7 @@ public class MapPanel extends BasePanel {
 		// TODO: FPS
 		g2d.setColor(Color.WHITE);
 		System.out.println(GameLoop.frameCount);
-		g2d.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 20));
+		g2d.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 50));
 		g2d.drawString("FPS: " + GameLoop.frameCount, 20, BaseFrame.DEFAULT_HEIGHT - 20);
 
 		// Dispose the off-screen graphics

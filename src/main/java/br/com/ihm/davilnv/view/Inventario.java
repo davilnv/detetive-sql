@@ -13,6 +13,7 @@ import br.com.ihm.davilnv.exception.ViewException;
 import br.com.ihm.davilnv.model.InventoryInfo;
 import br.com.ihm.davilnv.model.Personagem;
 import br.com.ihm.davilnv.statics.InventoryInfos;
+import br.com.ihm.davilnv.utils.ErrorHandler;
 
 public class Inventario extends JPanel{
 	private List<Personagem> personagens;
@@ -43,7 +44,7 @@ public class Inventario extends JPanel{
 				singlePlayer(g);
 			}
 		} catch (ViewException | IOException e) {
-			e.printStackTrace();
+			ErrorHandler.logAndExit(e);
 		}
 	}
 
