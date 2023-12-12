@@ -7,14 +7,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
-import br.com.ihm.davilnv.model.Camada;
-import br.com.ihm.davilnv.model.GameLoop;
-import br.com.ihm.davilnv.model.Logica;
-import br.com.ihm.davilnv.model.Personagem;
-import br.com.ihm.davilnv.statics.MP3Player;
+import br.com.ihm.davilnv.model.*;
+import br.com.ihm.davilnv.utils.Config;
+import br.com.ihm.davilnv.utils.ErrorHandler;
+import br.com.ihm.davilnv.utils.MusicPlayer;
 import br.com.ihm.davilnv.view.*;
 import br.com.ihm.davilnv.view.components.GameButton;
-import javazoom.jl.decoder.JavaLayerException;
 
 import javax.swing.*;
 
@@ -23,8 +21,8 @@ public class GameController extends KeyAdapter implements ActionListener {
     private MapPanel mapPanel;
     private Logica logica;
     private Personagem personagem;
-    private MP3Player introGamePlayer;
-    private static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1]; // TODO : Mudar para monitor 0
+    private MusicPlayer introGamePlayer;
+    private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1]; // TODO : Mudar para monitor 0
     private static final int TARGET_FPS = 60;
     public static java.util.List<Rectangle> colisao;
     private boolean cima, baixo, direita, esquerda;
@@ -34,12 +32,15 @@ public class GameController extends KeyAdapter implements ActionListener {
 
         // Inicia a reprodução da música em uma thread separada
         Thread musicThread = new Thread(() -> {
+            // Carrega as configurações do jogo (volume, idioma, etc)
             try {
-                introGamePlayer = new MP3Player("/assets/audios/duck-dodgers-theme-song.mp3");
-                introGamePlayer.playMp3InLoop();
-            } catch (IOException | JavaLayerException e) {
-                e.printStackTrace();
+                Config.load();
+            } catch (IOException  e) {
+                ErrorHandler.logAndExit(e);
             }
+
+            introGamePlayer = new MusicPlayer("/assets/audios/duck-dodgers-theme-song.mp3");
+            introGamePlayer.playInLoop();
         });
         musicThread.start();
 
@@ -48,7 +49,7 @@ public class GameController extends KeyAdapter implements ActionListener {
             try {
                 createAndShowGUI();
             } catch (IOException e) {
-                e.printStackTrace();
+                ErrorHandler.logAndExit(e);
             }
         });
 
@@ -56,17 +57,18 @@ public class GameController extends KeyAdapter implements ActionListener {
         try {
             musicThread.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            ErrorHandler.logAndExit(e);
         }
 
     }
 
     private void createAndShowGUI() throws IOException {
+
         mainFrame = new MainFrame();
 
         personagem = new Personagem(8, 64, 64, 13, 21, 30, 500, "/assets/images/sprite/sprite-detective_universal.png");
 
-        device.setFullScreenWindow(mainFrame);
+        DEVICE.setFullScreenWindow(mainFrame);
 
         for (GameButton button : mainFrame.buttons) {
             button.addActionListener(this);
@@ -93,10 +95,16 @@ public class GameController extends KeyAdapter implements ActionListener {
         }
     }
 
+    public void animarNPC() {
+        for (NPC npc : logica.getNpcs()) {
+            npc.animar("2");
+        }
+    }
+
 
     public void run() {
-            GameLoop gameLoop = new GameLoop(TARGET_FPS, this);
-            gameLoop.start();
+        GameLoop gameLoop = new GameLoop(TARGET_FPS, this) ;
+        gameLoop.start();
     }
 
     @Override
@@ -133,6 +141,9 @@ public class GameController extends KeyAdapter implements ActionListener {
         }
         if (mainFrame.getButtonByKey("config") == e.getSource()) {
             mainFrame.disableMenuComponents("config");
+            ConfigPanel configPanel = (ConfigPanel) mainFrame.getCurrentPanel();
+            configPanel.setMusicPlayer(introGamePlayer);
+            configPanel.initVolumeSlider();
         }
         if (mainFrame.getButtonByKey("ranking") == e.getSource()) {
             mainFrame.disableMenuComponents("ranking");
@@ -389,6 +400,14 @@ public class GameController extends KeyAdapter implements ActionListener {
 
     public MapPanel getMapPanel() {
         return mapPanel;
+    }
+
+    public MusicPlayer getIntroGamePlayer() {
+        return introGamePlayer;
+    }
+
+    public Logica getLogica() {
+        return logica;
     }
 
 }

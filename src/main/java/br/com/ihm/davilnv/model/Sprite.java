@@ -1,12 +1,13 @@
 package br.com.ihm.davilnv.model;
 
 
+import br.com.ihm.davilnv.utils.ErrorHandler;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.IOException;
-
+import java.util.Objects;
 import javax.imageio.ImageIO;
 
 /**
@@ -63,7 +64,7 @@ public abstract class Sprite {
 
         try {
 
-            this.personagem = ImageIO.read(Sprite.class.getResourceAsStream(endereco));
+            this.personagem = ImageIO.read(Objects.requireNonNull(Sprite.class.getResourceAsStream(endereco)));
             this.aparencia = aparencia;
             this.largura = largura;
             this.altura = altura;
@@ -89,7 +90,7 @@ public abstract class Sprite {
             }
         } catch (IOException e) {
             System.out.println("Não foi possivel carregar a Sprite");
-            e.printStackTrace();
+            ErrorHandler.logAndExit(e);
         }
 
         larguraPersonagem = sprites[0].getWidth();

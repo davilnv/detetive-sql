@@ -8,13 +8,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public abstract class BaseFrame extends JFrame{
+
+	public static final Color DEFAULT_COLOR = new Color(140,165,197);
 	public static final int DEFAULT_WIDTH = 1920;
 	public static final int DEFAULT_HEIGHT = 1080;
 	public static final int DEFAULT_WIDTH_BUTTON = 300;
 	public static final int DEFAULT_HEIGHT_BUTTON = 60;
+	public static final int CENTER_DEFAULT_Y = (DEFAULT_HEIGHT / 2);
+	public static final int CENTER_DEFAULT_X = (DEFAULT_WIDTH / 2);
 	public static final String DEFAULT_BUTTONS_PATH = "/assets/images/buttons/";
 	private static final String DEFAULT_MENU_PANEL_KEY = "menu";
 	private static final String DEFAULT_BACK_BUTTON_KEY = "seta-voltar";

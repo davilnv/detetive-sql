@@ -7,19 +7,19 @@ public class Logica {
     private List<Personagem> personagens;
     private int num1, num2;
     private List<Camada> camadas;
+    private List<NPC> npcs;
     private boolean ganhou;
 
     public Logica() {
         camadas = new ArrayList<Camada>();
+        npcs = new ArrayList<NPC>();
         camadas.add(new Camada("floor", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/floor.txt"));
         camadas.add(new Camada("second-floor", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/second-floor.txt"));
         camadas.add(new Camada("colision", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/colision.txt"));
         camadas.add(new Camada("top", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/top.txt"));
         camadas.add(new Camada("front-top", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/front-top.txt"));
 
-//		camadaFundo = Camadas.fase1()[0];
-//		camadaColisao = Camadas.fase1()[1];
-//		camadaTopo = Camadas.fase1()[2];
+        npcs.add(new NPC(2, 64, 64, 13, 21, 200, 500, "/assets/images/sprite/it-employee_universal.png", 600));
 
     }
 
@@ -118,6 +118,10 @@ public class Logica {
 
     public List<Camada> getCamadas() {
         return camadas;
+    }
+
+    public List<NPC> getNpcs() {
+        return npcs;
     }
 
     public Camada getCamada(String key) {

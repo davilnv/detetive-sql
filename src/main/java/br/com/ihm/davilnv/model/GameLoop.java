@@ -24,6 +24,8 @@ public class GameLoop {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameController.montarMapa();
+                gameController.animarNPC();
+                update(); // Chama o método update()
                 gameController.getMapPanel().repaint();
                 frames++;
 
@@ -36,6 +38,18 @@ public class GameLoop {
             }
         });
         timer.start();
+    }
+
+    public void update() {
+        for (NPC npc : gameController.getLogica().getNpcs()) {
+            npc.moverAleatoriamente();
+        }
+    }
+
+    public void restart() {
+        if (timer != null) {
+            timer.restart();
+        }
     }
 
     public void stop() {
