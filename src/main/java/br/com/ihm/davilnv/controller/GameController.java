@@ -22,7 +22,7 @@ public class GameController extends KeyAdapter implements ActionListener {
     private Logica logica;
     private Personagem personagem;
     private MusicPlayer introGamePlayer;
-    private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1]; // TODO : Mudar para monitor 0
+    private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]; // TODO : Mudar para monitor 0
     private static final int TARGET_FPS = 60;
     public static java.util.List<Rectangle> colisao;
     private boolean cima, baixo, direita, esquerda;

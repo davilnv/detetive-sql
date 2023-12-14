@@ -27,7 +27,7 @@ public class Config {
             Files.createDirectories(configPath.getParent());
             Files.createFile(configPath);
             // Set default volume
-            configValues.put("volume", 1.0);
+            configValues.put("volume", 0.5);
             save();
         }
         String content = new String(Files.readAllBytes(configPath));
