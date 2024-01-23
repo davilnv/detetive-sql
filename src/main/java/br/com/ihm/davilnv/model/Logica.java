@@ -1,25 +1,35 @@
 package br.com.ihm.davilnv.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class Logica {
-    private List<Personagem> personagens;
     private int num1, num2;
     private List<Camada> camadas;
     private List<NPC> npcs;
     private boolean ganhou;
 
     public Logica() {
-        camadas = new ArrayList<Camada>();
-        npcs = new ArrayList<NPC>();
+        camadas = new ArrayList<>();
+        npcs = new ArrayList<>();
         camadas.add(new Camada("floor", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/floor.txt"));
         camadas.add(new Camada("second-floor", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/second-floor.txt"));
         camadas.add(new Camada("colision", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/colision.txt"));
         camadas.add(new Camada("top", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/top.txt"));
         camadas.add(new Camada("front-top", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/front-top.txt"));
 
-        npcs.add(new NPC(2, 64, 64, 13, 21, 200, 500, "/assets/images/sprite/it-employee_universal.png", 600));
+        npcs.add(new NPC(2, 64, 64, 13, 21, 104, 190, "/assets/images/sprite/it-employee_universal.png", "Sophie Campbell", "TI"));
+        npcs.add(new NPC(2, 64, 64, 13, 21, 148, 750, "/assets/images/sprite/sprite-director_universal.png", "Sir Alexander Kensington", "Diretor"));
+        npcs.add(new NPC(2, 64, 64, 13, 21, 1325, 755, "/assets/images/sprite/chief-curator_universal.png", "Dra. Eleanor Thornton", "Curadora"));
+        npcs.add(new NPC(2, 64, 64, 13, 21, 1045, 925, "/assets/images/sprite/security-guard_universal.png", "William Smith", "Segurança"));
+        npcs.add(new NPC(2, 64, 64, 13, 21, 1010, 250, "/assets/images/sprite/caretaker_universal.png", "James Turner", "Zelador"));
+        npcs.add(new NPC(2, 64, 64, 13, 21, 755, 545, "/assets/images/sprite/museum-visitor_universal.png", "Lucy Bennett", "Visitante"));
+        npcs.add(new NPC(2, 64, 64, 13, 21, 940, 1040, "/assets/images/sprite/newscaster_universal.png", "Isabella Kensington", "Jornalista"));
 
     }
 
@@ -94,34 +104,6 @@ public class Logica {
             this.x = x;
             this.y = y;
         }
-    }
-
-    public int getNum1() {
-        return num1;
-    }
-
-    public void setNum1(int num1) {
-        this.num1 = num1;
-    }
-
-    public int getNum2() {
-        return num2;
-    }
-
-    public void setNum2(int num2) {
-        this.num2 = num2;
-    }
-
-    public boolean isGanhou() {
-        return ganhou;
-    }
-
-    public List<Camada> getCamadas() {
-        return camadas;
-    }
-
-    public List<NPC> getNpcs() {
-        return npcs;
     }
 
     public Camada getCamada(String key) {

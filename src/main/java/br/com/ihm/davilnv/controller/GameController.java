@@ -13,11 +13,13 @@ import br.com.ihm.davilnv.utils.ErrorHandler;
 import br.com.ihm.davilnv.utils.MusicPlayer;
 import br.com.ihm.davilnv.view.*;
 import br.com.ihm.davilnv.view.components.GameButton;
+import lombok.Getter;
 
 import javax.swing.*;
 
 public class GameController extends KeyAdapter implements ActionListener {
     private MainFrame mainFrame;
+    @Getter
     private MapPanel mapPanel;
     private Logica logica;
     private Personagem personagem;
@@ -35,7 +37,7 @@ public class GameController extends KeyAdapter implements ActionListener {
             // Carrega as configurações do jogo (volume, idioma, etc)
             try {
                 Config.load();
-            } catch (IOException  e) {
+            } catch (IOException e) {
                 ErrorHandler.logAndExit(e);
             }
 
@@ -83,9 +85,14 @@ public class GameController extends KeyAdapter implements ActionListener {
     private void iniciarJogo() {
         logica = new Logica();
         mapPanel = (MapPanel) mainFrame.getPanelByKey("map");
+        mapPanel.createOffscreenImage();
         mapPanel.setLogica(logica);
         mapPanel.setPersonagem(personagem);
         colisao = logica.getCamada("colision").montarColisao();
+        for (NPC npc : logica.getNpcs()) {
+            colisao.add(npc.getPersonagemRectangle());
+        }
+//        colisao.add()
         run();
     }
 
@@ -95,15 +102,8 @@ public class GameController extends KeyAdapter implements ActionListener {
         }
     }
 
-    public void animarNPC() {
-        for (NPC npc : logica.getNpcs()) {
-            npc.animar("2");
-        }
-    }
-
-
     public void run() {
-        GameLoop gameLoop = new GameLoop(TARGET_FPS, this) ;
+        GameLoop gameLoop = new GameLoop(TARGET_FPS, this);
         gameLoop.start();
     }
 
@@ -113,7 +113,7 @@ public class GameController extends KeyAdapter implements ActionListener {
         // Game
         if (mainFrame.getButtonByKey("jogar") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("start")) {
 
-            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            SwingWorker<Void, Void> worker = new SwingWorker<>() {
                 @Override
                 protected Void doInBackground() throws Exception {
                     mainFrame.getPanelByKey("start").setVisible(false);
@@ -181,6 +181,16 @@ public class GameController extends KeyAdapter implements ActionListener {
 
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             System.out.println("Pause game");
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            NPC nearbyNPC = personagem.getNearbyNPC(logica.getNpcs());
+            if (nearbyNPC != null) {
+                System.out.println("Interagindo com o NPC " + nearbyNPC.getNome());
+                // Execute a ação desejada com o NPC
+                // Por exemplo, você pode chamar um método do NPC:
+                //nearbyNPC.interact();
+            }
         }
 
         if (e.getKeyCode() == KeyEvent.VK_W) cima = true;
@@ -396,18 +406,6 @@ public class GameController extends KeyAdapter implements ActionListener {
 
             }
         }
-    }
-
-    public MapPanel getMapPanel() {
-        return mapPanel;
-    }
-
-    public MusicPlayer getIntroGamePlayer() {
-        return introGamePlayer;
-    }
-
-    public Logica getLogica() {
-        return logica;
     }
 
 }

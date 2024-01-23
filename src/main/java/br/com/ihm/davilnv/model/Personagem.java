@@ -1,22 +1,26 @@
 package br.com.ihm.davilnv.model;
 
 import br.com.ihm.davilnv.controller.GameController;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class Personagem extends Sprite {
     private int vida;
     private int pontos;
-
+    private Rectangle personagemRectangle;
     public static final int VELOCIDADE = 5;
     public static final int DIFF_COLISAO = -20;
 
     public Personagem(int aparencia, int largura, int altura, int colunas, int linhas, int x, int y, String endereco) {
         super(aparencia, largura, altura, colunas, linhas, x, y, endereco);
         vida = 100;
+        getRectangle(0, 0);
     }
 
     @Override
@@ -33,46 +37,32 @@ public class Personagem extends Sprite {
     public void mover(String direcao) {
     }
 
-    public void perderVida() {
-        if (colisao()) {
-            vida = vida - 1;
-        }
+    public void getRectangle(int x, int y) {
+        personagemRectangle = new Rectangle(getX() + x - DIFF_COLISAO, getY() + y - DIFF_COLISAO, getLarguraPersonagem() + (DIFF_COLISAO * 2), getAlturaPersonagem() + DIFF_COLISAO);
     }
 
-//    public boolean colisaoResultado() {
-//        Rectangle personagem = new Rectangle(getX()+10, getY()+10,
-//                getLarguraPersonagem()-10, getAlturaPersonagem()-10);
-//        Rectangle inimigoResultado = new Rectangle(resultado.getX(), resultado.getY(),
-//                resultado.getLargura(), resultado.getAltura());
-//        if(personagem.intersects(inimigoResultado))
-//            return true;
-//        return false;
+//    public Rectangle getRectangle() {
+//        return new Rectangle(getX() - DIFF_COLISAO, getY() - DIFF_COLISAO, getLarguraPersonagem() + (DIFF_COLISAO * 2), getAlturaPersonagem() + DIFF_COLISAO);
+////        return new Rectangle(getX(), getY(), getLarguraPersonagem(), getAlturaPersonagem());
 //    }
 
-    public boolean colisao() {
-        Rectangle personagem = new Rectangle(getX()+10, getY()+10,
-                getLarguraPersonagem()-10, getAlturaPersonagem()-10);
-        List<Rectangle> tmp = new ArrayList<Rectangle>();
-//        for (Inimigo enemy : inimigo) {
-//            tmp.add(new Rectangle(enemy.getX(), enemy.getY(), enemy.getLargura(), enemy.getAltura()));
-//        }
-        for(Rectangle rectangle : tmp) {
-            if(rectangle.intersects(personagem)){
-                return true;
+    public boolean isColliding(List<Rectangle> tmp, int x, int y) {
+        getRectangle(x, y);
+        for (Rectangle rectangle : tmp) {
+            if (rectangle.intersects(personagemRectangle)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
-    public boolean colisao(List<Rectangle> tmp, int x,int y) {
-        Rectangle personagem = new Rectangle(getX()+x-DIFF_COLISAO, getY()+y-DIFF_COLISAO,
-                getLarguraPersonagem()+(DIFF_COLISAO*2), getAlturaPersonagem()+DIFF_COLISAO);
-        for(Rectangle rectangle : tmp) {
-            if(rectangle.intersects(personagem)){
-                return true;
+    public NPC getNearbyNPC(List<NPC> npcList) {
+        for (NPC npc : npcList) {
+            if (personagemRectangle.intersects(npc.getNPCRectangle())) {
+                return npc;
             }
         }
-        return false;
+        return null;
     }
 
     public String getStatus(int win, int lose) {
@@ -94,31 +84,15 @@ public class Personagem extends Sprite {
 
     @Override
     public void setX(int posX) {
-        if(!colisao(GameController.colisao, posX-getX(), 0))
+        if (isColliding(GameController.colisao, posX - getX(), 0))
             super.setX(posX);
 
     }
 
     @Override
     public void setY(int posY) {
-        if(!colisao(GameController.colisao, 0, posY-getY()))
+        if (isColliding(GameController.colisao, 0, posY - getY()))
             super.setY(posY);
-    }
-
-    public int getVida() {
-        return vida;
-    }
-
-    public void setVida(int vida) {
-        this.vida = vida;
-    }
-
-    public int getPontos() {
-        return pontos;
-    }
-
-    public void setPontos(int pontos) {
-        this.pontos = pontos;
     }
 
 }
