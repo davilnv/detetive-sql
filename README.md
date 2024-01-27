@@ -2,9 +2,9 @@
 
 <img alt="user-page" src="/menu/menu-game.png">
 
-**Plataforma:** PC, Mac, Linux
+**Plataforma:** Windows e Linux
 
-**Engine:** Java, LibGDX
+**Engine:** Java
 
 **Gênero:** Aventura, Puzzle
 

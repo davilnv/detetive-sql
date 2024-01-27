@@ -7,17 +7,22 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import br.com.ihm.davilnv.bll.MuseumSystemBll;
+import br.com.ihm.davilnv.dal.DatabaseConnection;
 import br.com.ihm.davilnv.model.*;
 import br.com.ihm.davilnv.utils.Config;
 import br.com.ihm.davilnv.utils.ErrorHandler;
 import br.com.ihm.davilnv.utils.MusicPlayer;
 import br.com.ihm.davilnv.view.*;
 import br.com.ihm.davilnv.view.components.GameButton;
+import lombok.Getter;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
 
 public class GameController extends KeyAdapter implements ActionListener {
     private MainFrame mainFrame;
+    @Getter
     private MapPanel mapPanel;
     private Logica logica;
     private Personagem personagem;
@@ -25,8 +30,8 @@ public class GameController extends KeyAdapter implements ActionListener {
     private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]; // TODO : Mudar para monitor 0
     private static final int TARGET_FPS = 60;
     public static java.util.List<Rectangle> colisao;
-    private boolean cima, baixo, direita, esquerda;
-    private int up, down, left, right;
+
+
 
     public GameController() {
 
@@ -35,23 +40,17 @@ public class GameController extends KeyAdapter implements ActionListener {
             // Carrega as configurações do jogo (volume, idioma, etc)
             try {
                 Config.load();
-            } catch (IOException  e) {
+            } catch (IOException e) {
                 ErrorHandler.logAndExit(e);
             }
 
-            introGamePlayer = new MusicPlayer("/assets/audios/duck-dodgers-theme-song.mp3");
+            introGamePlayer = new MusicPlayer("/audios/duck-dodgers-theme-song.mp3");
             introGamePlayer.playInLoop();
         });
         musicThread.start();
 
         // Inicia a interface gráfica em outra thread
-        SwingUtilities.invokeLater(() -> {
-            try {
-                createAndShowGUI();
-            } catch (IOException e) {
-                ErrorHandler.logAndExit(e);
-            }
-        });
+        SwingUtilities.invokeLater(this::createAndShowGUI);
 
         // Aguarde a conclusão da reprodução da música
         try {
@@ -62,11 +61,11 @@ public class GameController extends KeyAdapter implements ActionListener {
 
     }
 
-    private void createAndShowGUI() throws IOException {
+    private void createAndShowGUI() {
 
         mainFrame = new MainFrame();
-
-        personagem = new Personagem(8, 64, 64, 13, 21, 30, 500, "/assets/images/sprite/sprite-detective_universal.png");
+        // TODO: Mudar posição do personagem para iniciar na porta do museu
+        personagem = new Personagem(8, 64, 64, 13, 21, 136, 212, "/assets/images/sprite/sprite-detective_universal.png");
 
         DEVICE.setFullScreenWindow(mainFrame);
 
@@ -82,11 +81,26 @@ public class GameController extends KeyAdapter implements ActionListener {
 
     private void iniciarJogo() {
         logica = new Logica();
+
+        // Carrega a instancia da classe MapPanel e seta dados iniciais
         mapPanel = (MapPanel) mainFrame.getPanelByKey("map");
+        mapPanel.createOffscreenImage();
         mapPanel.setLogica(logica);
         mapPanel.setPersonagem(personagem);
+
+        // Carrega as colisoes
         colisao = logica.getCamada("colision").montarColisao();
+        for (NPC npc : logica.getNpcs()) {
+            colisao.add(npc.getPersonagemRectangle());
+        }
+//        colisao.add(logica.getComputador().getRectangle());
+
+        // Chama  a inicialização do banco de dados
+        DatabaseConnection.executeScript("/files/create_data_game.sql");
+
+        // Inicia o game loop
         run();
+
     }
 
     public void montarMapa() {
@@ -95,15 +109,8 @@ public class GameController extends KeyAdapter implements ActionListener {
         }
     }
 
-    public void animarNPC() {
-        for (NPC npc : logica.getNpcs()) {
-            npc.animar("2");
-        }
-    }
-
-
     public void run() {
-        GameLoop gameLoop = new GameLoop(TARGET_FPS, this) ;
+        GameLoop gameLoop = new GameLoop(TARGET_FPS, this);
         gameLoop.start();
     }
 
@@ -113,7 +120,7 @@ public class GameController extends KeyAdapter implements ActionListener {
         // Game
         if (mainFrame.getButtonByKey("jogar") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("start")) {
 
-            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            SwingWorker<Void, Void> worker = new SwingWorker<>() {
                 @Override
                 protected Void doInBackground() throws Exception {
                     mainFrame.getPanelByKey("start").setVisible(false);
@@ -183,231 +190,90 @@ public class GameController extends KeyAdapter implements ActionListener {
             System.out.println("Pause game");
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_W) cima = true;
-        if (e.getKeyCode() == KeyEvent.VK_S) baixo = true;
-        if (e.getKeyCode() == KeyEvent.VK_A) esquerda = true;
-        if (e.getKeyCode() == KeyEvent.VK_D) direita = true;
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
-        movimento();
+            if (personagem.getNearbyComputer(logica.getComputador())) {
+                System.out.println("Interagindo com o computador");
+
+                // Pega a instancia do LoginPanel
+                LoginPanel loginPanel = (LoginPanel) mainFrame.getPanelByKey("login");
+                MuseumSystemPanel museumSystemPanel = (MuseumSystemPanel) mainFrame.getPanelByKey("museum-system");
+               // Seta dados no MuseumSystemPanel
+                museumSystemPanel.setTableList(MuseumSystemBll.getTableNames());
+
+                // Esconde o MapPanel e mostra o LoginPanel
+                mapPanel.setVisible(false);
+                loginPanel.setVisible(true);
+
+                // Adiciona ações aos botões
+                loginPanel.getLoginButton().addActionListener(e1 -> {
+                    String username = loginPanel.getUsernameField().getText();
+                    String password = new String(loginPanel.getPasswordField().getPassword());
+                    boolean logado = MuseumSystemBll.getLogin(username, password);
+                    if (logado) {
+                        // Realiza login, esconde o LoginPanel e mostra o MuseumSystemPanel
+                        System.out.println("Login realizado com sucesso"); // TODO: Remover isto aqui
+                        loginPanel.setVisible(false);
+                        museumSystemPanel.setVisible(true);
+
+                        // Adiciona ação ao botão de executar query e executa
+                        museumSystemPanel.getExecuteButton().addActionListener(e2 -> {
+                            String query = museumSystemPanel.getQueryField().getText();
+                            TableModel tableModel = MuseumSystemBll.executeQuery(query);
+                            museumSystemPanel.setResultTable(tableModel);
+                        });
+
+                    } else {
+                        System.out.println("Usuário ou senha inválidos"); // TODO: Mostrar mensagem de erro em um label vermelho, ativar e desativar
+                    }
+                });
+                loginPanel.getCloseButton().addActionListener(e1 -> {
+                    loginPanel.setVisible(false);
+                    mapPanel.setVisible(true);
+                });
+
+            }
+
+            NPC nearbyNPC = personagem.getNearbyNPC(logica.getNpcs());
+            if (nearbyNPC != null) {
+                System.out.println("Interagindo com o NPC " + nearbyNPC.getNome());
+                // Execute a ação desejada com o NPC
+                // Por exemplo, você pode chamar um método do NPC:
+                //nearbyNPC.interact();
+            }
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            personagem.setCima(true);
+            personagem.setLastDirectionPressed(Personagem.Direction.UP);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            personagem.setBaixo(true);
+            personagem.setLastDirectionPressed(Personagem.Direction.DOWN);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            personagem.setEsquerda(true);
+            personagem.setLastDirectionPressed(Personagem.Direction.LEFT);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_D) {
+            personagem.setDireita(true);
+            personagem.setLastDirectionPressed(Personagem.Direction.RIGHT);
+        }
+
+        personagem.movimento();
 
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_W) cima = false;
-        if (e.getKeyCode() == KeyEvent.VK_S) baixo = false;
-        if (e.getKeyCode() == KeyEvent.VK_A) esquerda = false;
-        if (e.getKeyCode() == KeyEvent.VK_D) direita = false;
-    }
+        if (e.getKeyCode() == KeyEvent.VK_W) personagem.setCima(false);
+        if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(false);
+        if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(false);
+        if (e.getKeyCode() == KeyEvent.VK_D) personagem.setDireita(false);
 
-    public void movimento() {
-        if (esquerda) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (xL > Personagem.DIFF_COLISAO) {
-                personagem.setX(xL - Personagem.VELOCIDADE);
-                personagem.setY(yL);
-                switch (left) {
-                    case 0:
-                        personagem.setAparencia(9);
-                        break;
-                    case 1:
-                        personagem.setAparencia(30);
-                        break;
-                    case 2:
-                        personagem.setAparencia(51);
-                        break;
-                    case 3:
-                        personagem.setAparencia(72);
-                        break;
-                    case 4:
-                        personagem.setAparencia(93);
-                        break;
-                    case 5:
-                        personagem.setAparencia(114);
-                        break;
-                    case 6:
-                        personagem.setAparencia(135);
-                        break;
-                    case 7:
-                        personagem.setAparencia(156);
-                        break;
-                    case 8:
-                        personagem.setAparencia(177);
-                        break;
-                    case 9:
-                        personagem.setAparencia(198);
-                        break;
-                    case 10:
-                        personagem.setAparencia(219);
-                        break;
-                }
-                if (left == 10) {
-                    left = 0;
-                } else {
-                    left++;
-                }
-
-            }
+        if (!personagem.isCima() && !personagem.isBaixo() && !personagem.isEsquerda() && !personagem.isDireita()) {
+            personagem.setLastDirectionPressed(null);
         }
-        if (cima) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (yL > Personagem.DIFF_COLISAO) {
-                personagem.setX(xL);
-                personagem.setY(yL - Personagem.VELOCIDADE);
-                switch (up) {
-                    case 0:
-                        personagem.setAparencia(8);
-                        break;
-                    case 1:
-                        personagem.setAparencia(29);
-                        break;
-                    case 2:
-                        personagem.setAparencia(50);
-                        break;
-                    case 3:
-                        personagem.setAparencia(71);
-                        break;
-                    case 4:
-                        personagem.setAparencia(92);
-                        break;
-                    case 5:
-                        personagem.setAparencia(113);
-                        break;
-                    case 6:
-                        personagem.setAparencia(134);
-                        break;
-                    case 7:
-                        personagem.setAparencia(155);
-                        break;
-                    case 8:
-                        personagem.setAparencia(176);
-                        break;
-                    case 9:
-                        personagem.setAparencia(197);
-                        break;
-                    case 10:
-                        personagem.setAparencia(218);
-                        break;
-                }
-                if (up == 10) {
-                    up = 0;
-                } else {
-                    up++;
-                }
-            }
-
-        }
-        if (direita) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (xL < 1856 - Personagem.DIFF_COLISAO) {
-                personagem.setX(xL + Personagem.VELOCIDADE);
-                personagem.setY(yL);
-                switch (right) {
-                    case 0:
-                        personagem.setAparencia(11);
-                        break;
-                    case 1:
-                        personagem.setAparencia(32);
-                        break;
-                    case 2:
-                        personagem.setAparencia(53);
-                        break;
-                    case 3:
-                        personagem.setAparencia(74);
-                        break;
-                    case 4:
-                        personagem.setAparencia(95);
-                        break;
-                    case 5:
-                        personagem.setAparencia(116);
-                        break;
-                    case 6:
-                        personagem.setAparencia(137);
-                        break;
-                    case 7:
-                        personagem.setAparencia(158);
-                        break;
-                    case 8:
-                        personagem.setAparencia(179);
-                        break;
-                    case 9:
-                        personagem.setAparencia(200);
-                        break;
-                    case 10:
-                        personagem.setAparencia(221);
-                        break;
-                }
-                if (right == 10) {
-                    right = 0;
-                } else {
-                    right++;
-                }
-            }
-        }
-        if (baixo) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (yL < 1016 - Personagem.DIFF_COLISAO) {
-                personagem.setX(xL);
-                personagem.setY(yL + Personagem.VELOCIDADE);
-                switch (down) {
-                    case 0:
-                        personagem.setAparencia(10);
-                        break;
-                    case 1:
-                        personagem.setAparencia(31);
-                        break;
-                    case 2:
-                        personagem.setAparencia(52);
-                        break;
-                    case 3:
-                        personagem.setAparencia(73);
-                        break;
-                    case 4:
-                        personagem.setAparencia(94);
-                        break;
-                    case 5:
-                        personagem.setAparencia(115);
-                        break;
-                    case 6:
-                        personagem.setAparencia(136);
-                        break;
-                    case 7:
-                        personagem.setAparencia(157);
-                        break;
-                    case 8:
-                        personagem.setAparencia(178);
-                        break;
-                    case 9:
-                        personagem.setAparencia(199);
-                        break;
-                    case 10:
-                        personagem.setAparencia(220);
-                        break;
-                }
-                if (down == 10) {
-                    down = 0;
-                } else {
-                    down++;
-                }
-
-            }
-        }
-    }
-
-    public MapPanel getMapPanel() {
-        return mapPanel;
-    }
-
-    public MusicPlayer getIntroGamePlayer() {
-        return introGamePlayer;
-    }
-
-    public Logica getLogica() {
-        return logica;
     }
 
 }

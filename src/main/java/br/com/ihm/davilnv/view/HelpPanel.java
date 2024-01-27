@@ -25,7 +25,7 @@ public class HelpPanel extends BasePanel {
 		Platform.runLater(() -> {
 			WebView webView = new WebView();
 			webView.getEngine().load(
-					Objects.requireNonNull(HelpPanel.class.getResource("/assets/files/help-text.html")).toExternalForm()
+					Objects.requireNonNull(HelpPanel.class.getResource("/files/help-text.html")).toExternalForm()
 			);
 
 			fxPanel.setScene(new Scene(webView));

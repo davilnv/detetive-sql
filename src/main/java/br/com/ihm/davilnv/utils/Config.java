@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Config {
-    private static final String CONFIG_FILE = "src/main/resources/assets/files/config.json";
-    private static Map<String, Object> configValues = new HashMap<>();
+    private static final String CONFIG_FILE = "src/main/resources/files/config.json";
+    private static final Map<String, Object> configValues = new HashMap<>();
 
     public static Object getConfigValue(String key) {
         return configValues.get(key);

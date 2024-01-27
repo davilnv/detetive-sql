@@ -25,7 +25,7 @@ public class CreditPanel extends BasePanel {
 		Platform.runLater(() -> {
 			WebView webView = new WebView();
 			webView.getEngine().load(
-					Objects.requireNonNull(HelpPanel.class.getResource("/assets/files/credit-text.html")).toExternalForm()
+					Objects.requireNonNull(HelpPanel.class.getResource("/files/credit-text.html")).toExternalForm()
 			);
 
 			fxPanel.setScene(new Scene(webView));

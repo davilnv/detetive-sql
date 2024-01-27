@@ -1,5 +1,7 @@
 target/
 logs/
+jre-generation/linux
+jre-generation/windows
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

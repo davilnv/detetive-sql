@@ -30,4 +30,10 @@ public class ErrorHandler {
         LOGGER.log(Level.SEVERE, e.getMessage(), e);
         System.exit(0);
     }
+
+    public static void logAndExit(String errorMessage) {
+        LOGGER.log(Level.SEVERE, errorMessage, Exception.class);
+        System.exit(0);
+    }
+
 }

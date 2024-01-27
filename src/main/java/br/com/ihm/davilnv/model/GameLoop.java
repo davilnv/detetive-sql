@@ -23,27 +23,23 @@ public class GameLoop {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameController.montarMapa();
-                gameController.animarNPC();
-                update(); // Chama o método update()
-                gameController.getMapPanel().repaint();
-                frames++;
-
                 long currentTime = System.currentTimeMillis();
-                if (currentTime - lastTime >= 1000) {
-                    frameCount = frames;
-                    frames = 0;
-                    lastTime = currentTime;
+                long elapsedTime = currentTime - lastTime;
+
+                if (elapsedTime >= 1000 / targetFPS) {
+                    gameController.montarMapa();
+                    gameController.getMapPanel().repaint();
+                    frames++;
+
+                    if (currentTime - lastTime >= 1000) {
+                        frameCount = frames;
+                        frames = 0;
+                        lastTime = currentTime;
+                    }
                 }
             }
         });
         timer.start();
-    }
-
-    public void update() {
-        for (NPC npc : gameController.getLogica().getNpcs()) {
-            npc.moverAleatoriamente();
-        }
     }
 
     public void restart() {

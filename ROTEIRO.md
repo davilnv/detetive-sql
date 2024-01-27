@@ -11,11 +11,11 @@ Enquanto as investigações estão em andamento, o diretor do museu, Sir Alexand
 
 A notícia do desaparecimento do diamante está gerando grande comoção na comunidade de programadores SQL, com muitos ansiosos para testar suas habilidades e ajudar a resolver este enigma. A nação inteira aguarda ansiosamente os desenvolvimentos desta intrigante história de desaparecimento e esperando que a joia preciosa seja recuperada para ser apreciada pelas gerações futuras.
 
-"
+
 3.Com este chamado ao museu para investigação. O jogador inicia dentro do museu e recebe uma lista de perguntas que precisam ser respondidas para resolver o crime, o jogador deve ir até a sala de servidores ou falar com funcionários para obter pistas.
 Para responder às perguntas, o jogador precisa usar as instruções SQL para pesquisar no banco de dados do museu. O banco de dados contém informações sobre as testemunhas e suspeitos.
 
-    3.1 Perguntas:
+3.1 Perguntas:
 
     a) Quem acessou o banco de dados do museu nas últimas 24 horas?
 
@@ -27,7 +27,7 @@ Para responder às perguntas, o jogador precisa usar as instruções SQL para pe
 
     e) Há registros de atividade suspeita nos registros de transações nas últimas semanas?
 
-    3.2 Lista de Testemunhas e Suspeitos:
+3.2 Lista de Testemunhas e Suspeitos:
 
     a) Sir Alexander Kensington (Diretor do Museu): Ele estava no museu durante o desaparecimento do diamante, mas afirma não ter envolvimento no caso.
 
