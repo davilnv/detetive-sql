@@ -229,10 +229,22 @@ public class GameController extends KeyAdapter implements ActionListener {
             }
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_W) personagem.setCima(true);
-        if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(true);
-        if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(true);
-        if (e.getKeyCode() == KeyEvent.VK_D) personagem.setDireita(true);
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            personagem.setCima(true);
+            personagem.setLastDirectionPressed(Personagem.Direction.UP);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            personagem.setBaixo(true);
+            personagem.setLastDirectionPressed(Personagem.Direction.DOWN);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            personagem.setEsquerda(true);
+            personagem.setLastDirectionPressed(Personagem.Direction.LEFT);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_D) {
+            personagem.setDireita(true);
+            personagem.setLastDirectionPressed(Personagem.Direction.RIGHT);
+        }
 
         personagem.movimento();
 
@@ -244,6 +256,10 @@ public class GameController extends KeyAdapter implements ActionListener {
         if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(false);
         if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(false);
         if (e.getKeyCode() == KeyEvent.VK_D) personagem.setDireita(false);
+
+        if (!personagem.isCima() && !personagem.isBaixo() && !personagem.isEsquerda() && !personagem.isDireita()) {
+            personagem.setLastDirectionPressed(null);
+        }
     }
 
 }
