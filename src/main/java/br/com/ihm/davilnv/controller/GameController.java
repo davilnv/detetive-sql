@@ -29,8 +29,8 @@ public class GameController extends KeyAdapter implements ActionListener {
     private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]; // TODO : Mudar para monitor 0
     private static final int TARGET_FPS = 60;
     public static java.util.List<Rectangle> colisao;
-    private boolean cima, baixo, direita, esquerda;
-    private int up, down, left, right;
+
+
 
     public GameController() {
 
@@ -193,12 +193,6 @@ public class GameController extends KeyAdapter implements ActionListener {
 
             if (personagem.getNearbyComputer(logica.getComputador())) {
                 System.out.println("Interagindo com o computador");
-                // O personagem está na área do computador
-                // Trava a movimentação do personagem
-                cima = false;
-                baixo = false;
-                esquerda = false;
-                direita = false;
 
                 // Pega a instancia do LoginPanel
                 LoginPanel loginPanel = (LoginPanel) mainFrame.getPanelByKey("login");
@@ -235,219 +229,21 @@ public class GameController extends KeyAdapter implements ActionListener {
             }
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_W) cima = true;
-        if (e.getKeyCode() == KeyEvent.VK_S) baixo = true;
-        if (e.getKeyCode() == KeyEvent.VK_A) esquerda = true;
-        if (e.getKeyCode() == KeyEvent.VK_D) direita = true;
+        if (e.getKeyCode() == KeyEvent.VK_W) personagem.setCima(true);
+        if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(true);
+        if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(true);
+        if (e.getKeyCode() == KeyEvent.VK_D) personagem.setDireita(true);
 
-        movimento();
+        personagem.movimento();
 
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_W) cima = false;
-        if (e.getKeyCode() == KeyEvent.VK_S) baixo = false;
-        if (e.getKeyCode() == KeyEvent.VK_A) esquerda = false;
-        if (e.getKeyCode() == KeyEvent.VK_D) direita = false;
-    }
-
-    public void movimento() {
-        if (esquerda) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (xL > Personagem.DIFF_COLISAO) {
-                personagem.setX(xL - Personagem.VELOCIDADE);
-                personagem.setY(yL);
-                switch (left) {
-                    case 0:
-                        personagem.setAparencia(9);
-                        break;
-                    case 1:
-                        personagem.setAparencia(30);
-                        break;
-                    case 2:
-                        personagem.setAparencia(51);
-                        break;
-                    case 3:
-                        personagem.setAparencia(72);
-                        break;
-                    case 4:
-                        personagem.setAparencia(93);
-                        break;
-                    case 5:
-                        personagem.setAparencia(114);
-                        break;
-                    case 6:
-                        personagem.setAparencia(135);
-                        break;
-                    case 7:
-                        personagem.setAparencia(156);
-                        break;
-                    case 8:
-                        personagem.setAparencia(177);
-                        break;
-                    case 9:
-                        personagem.setAparencia(198);
-                        break;
-                    case 10:
-                        personagem.setAparencia(219);
-                        break;
-                }
-                if (left == 10) {
-                    left = 0;
-                } else {
-                    left++;
-                }
-
-            }
-        }
-        if (cima) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (yL > Personagem.DIFF_COLISAO) {
-                personagem.setX(xL);
-                personagem.setY(yL - Personagem.VELOCIDADE);
-                switch (up) {
-                    case 0:
-                        personagem.setAparencia(8);
-                        break;
-                    case 1:
-                        personagem.setAparencia(29);
-                        break;
-                    case 2:
-                        personagem.setAparencia(50);
-                        break;
-                    case 3:
-                        personagem.setAparencia(71);
-                        break;
-                    case 4:
-                        personagem.setAparencia(92);
-                        break;
-                    case 5:
-                        personagem.setAparencia(113);
-                        break;
-                    case 6:
-                        personagem.setAparencia(134);
-                        break;
-                    case 7:
-                        personagem.setAparencia(155);
-                        break;
-                    case 8:
-                        personagem.setAparencia(176);
-                        break;
-                    case 9:
-                        personagem.setAparencia(197);
-                        break;
-                    case 10:
-                        personagem.setAparencia(218);
-                        break;
-                }
-                if (up == 10) {
-                    up = 0;
-                } else {
-                    up++;
-                }
-            }
-
-        }
-        if (direita) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (xL < 1856 - Personagem.DIFF_COLISAO) {
-                personagem.setX(xL + Personagem.VELOCIDADE);
-                personagem.setY(yL);
-                switch (right) {
-                    case 0:
-                        personagem.setAparencia(11);
-                        break;
-                    case 1:
-                        personagem.setAparencia(32);
-                        break;
-                    case 2:
-                        personagem.setAparencia(53);
-                        break;
-                    case 3:
-                        personagem.setAparencia(74);
-                        break;
-                    case 4:
-                        personagem.setAparencia(95);
-                        break;
-                    case 5:
-                        personagem.setAparencia(116);
-                        break;
-                    case 6:
-                        personagem.setAparencia(137);
-                        break;
-                    case 7:
-                        personagem.setAparencia(158);
-                        break;
-                    case 8:
-                        personagem.setAparencia(179);
-                        break;
-                    case 9:
-                        personagem.setAparencia(200);
-                        break;
-                    case 10:
-                        personagem.setAparencia(221);
-                        break;
-                }
-                if (right == 10) {
-                    right = 0;
-                } else {
-                    right++;
-                }
-            }
-        }
-        if (baixo) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (yL < 1016 - Personagem.DIFF_COLISAO) {
-                personagem.setX(xL);
-                personagem.setY(yL + Personagem.VELOCIDADE);
-                switch (down) {
-                    case 0:
-                        personagem.setAparencia(10);
-                        break;
-                    case 1:
-                        personagem.setAparencia(31);
-                        break;
-                    case 2:
-                        personagem.setAparencia(52);
-                        break;
-                    case 3:
-                        personagem.setAparencia(73);
-                        break;
-                    case 4:
-                        personagem.setAparencia(94);
-                        break;
-                    case 5:
-                        personagem.setAparencia(115);
-                        break;
-                    case 6:
-                        personagem.setAparencia(136);
-                        break;
-                    case 7:
-                        personagem.setAparencia(157);
-                        break;
-                    case 8:
-                        personagem.setAparencia(178);
-                        break;
-                    case 9:
-                        personagem.setAparencia(199);
-                        break;
-                    case 10:
-                        personagem.setAparencia(220);
-                        break;
-                }
-                if (down == 10) {
-                    down = 0;
-                } else {
-                    down++;
-                }
-
-            }
-        }
+        if (e.getKeyCode() == KeyEvent.VK_W) personagem.setCima(false);
+        if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(false);
+        if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(false);
+        if (e.getKeyCode() == KeyEvent.VK_D) personagem.setDireita(false);
     }
 
 }
