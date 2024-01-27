@@ -12,6 +12,7 @@ public class Logica {
     private int num1, num2;
     private List<Camada> camadas;
     private List<NPC> npcs;
+    private Computador computador;
     private boolean ganhou;
 
     public Logica() {
@@ -23,7 +24,7 @@ public class Logica {
         camadas.add(new Camada("top", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/top.txt"));
         camadas.add(new Camada("front-top", 60, 40, 32, 32, "/assets/tiled/tiled.png", "/assets/tiled/front-top.txt"));
 
-        npcs.add(new NPC(2, 64, 64, 13, 21, 104, 190, "/assets/images/sprite/it-employee_universal.png", "Sophie Campbell", "TI"));
+        npcs.add(new NPC(2, 64, 64, 13, 21, 136, 128, "/assets/images/sprite/it-employee_universal.png", "Sophie Campbell", "TI"));
         npcs.add(new NPC(2, 64, 64, 13, 21, 148, 750, "/assets/images/sprite/sprite-director_universal.png", "Sir Alexander Kensington", "Diretor"));
         npcs.add(new NPC(2, 64, 64, 13, 21, 1325, 755, "/assets/images/sprite/chief-curator_universal.png", "Dra. Eleanor Thornton", "Curadora"));
         npcs.add(new NPC(2, 64, 64, 13, 21, 1045, 925, "/assets/images/sprite/security-guard_universal.png", "William Smith", "Segurança"));
@@ -31,6 +32,8 @@ public class Logica {
         npcs.add(new NPC(2, 64, 64, 13, 21, 755, 545, "/assets/images/sprite/museum-visitor_universal.png", "Lucy Bennett", "Visitante"));
         npcs.add(new NPC(2, 64, 64, 13, 21, 940, 1040, "/assets/images/sprite/newscaster_universal.png", "Isabella Kensington", "Jornalista"));
 
+//        104, 190,
+        computador = new Computador(32, 190, 74, 84);
     }
 
     public void iniciarFase() {

@@ -7,6 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import br.com.ihm.davilnv.bll.MuseumSystemBll;
+import br.com.ihm.davilnv.dal.DatabaseConnection;
 import br.com.ihm.davilnv.model.*;
 import br.com.ihm.davilnv.utils.Config;
 import br.com.ihm.davilnv.utils.ErrorHandler;
@@ -41,19 +43,13 @@ public class GameController extends KeyAdapter implements ActionListener {
                 ErrorHandler.logAndExit(e);
             }
 
-            introGamePlayer = new MusicPlayer("/assets/audios/duck-dodgers-theme-song.mp3");
+            introGamePlayer = new MusicPlayer("/audios/duck-dodgers-theme-song.mp3");
             introGamePlayer.playInLoop();
         });
         musicThread.start();
 
         // Inicia a interface gráfica em outra thread
-        SwingUtilities.invokeLater(() -> {
-            try {
-                createAndShowGUI();
-            } catch (IOException e) {
-                ErrorHandler.logAndExit(e);
-            }
-        });
+        SwingUtilities.invokeLater(this::createAndShowGUI);
 
         // Aguarde a conclusão da reprodução da música
         try {
@@ -64,11 +60,11 @@ public class GameController extends KeyAdapter implements ActionListener {
 
     }
 
-    private void createAndShowGUI() throws IOException {
+    private void createAndShowGUI() {
 
         mainFrame = new MainFrame();
-
-        personagem = new Personagem(8, 64, 64, 13, 21, 30, 500, "/assets/images/sprite/sprite-detective_universal.png");
+        // TODO: Mudar posição do personagem para iniciar na porta do museu
+        personagem = new Personagem(8, 64, 64, 13, 21, 136, 212, "/assets/images/sprite/sprite-detective_universal.png");
 
         DEVICE.setFullScreenWindow(mainFrame);
 
@@ -84,16 +80,26 @@ public class GameController extends KeyAdapter implements ActionListener {
 
     private void iniciarJogo() {
         logica = new Logica();
+
+        // Carrega a instancia da classe MapPanel e seta dados iniciais
         mapPanel = (MapPanel) mainFrame.getPanelByKey("map");
         mapPanel.createOffscreenImage();
         mapPanel.setLogica(logica);
         mapPanel.setPersonagem(personagem);
+
+        // Carrega as colisoes
         colisao = logica.getCamada("colision").montarColisao();
         for (NPC npc : logica.getNpcs()) {
             colisao.add(npc.getPersonagemRectangle());
         }
-//        colisao.add()
+//        colisao.add(logica.getComputador().getRectangle());
+
+        // Chama  a inicialização do banco de dados
+        DatabaseConnection.executeScript("/files/create_data_game.sql");
+
+        // Inicia o game loop
         run();
+
     }
 
     public void montarMapa() {
@@ -184,6 +190,42 @@ public class GameController extends KeyAdapter implements ActionListener {
         }
 
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            if (personagem.getNearbyComputer(logica.getComputador())) {
+                System.out.println("Interagindo com o computador");
+                // O personagem está na área do computador
+                // Trava a movimentação do personagem
+                cima = false;
+                baixo = false;
+                esquerda = false;
+                direita = false;
+
+                // Pega a instancia do LoginPanel
+                LoginPanel loginPanel = (LoginPanel) mainFrame.getPanelByKey("login");
+                mapPanel.setVisible(false);
+                loginPanel.setVisible(true);
+
+                // Adiciona ações aos botões
+                loginPanel.getLoginButton().addActionListener(e1 -> {
+                    String username = loginPanel.getUsernameField().getText();
+                    String password = new String(loginPanel.getPasswordField().getPassword());
+                    boolean logado = MuseumSystemBll.getLogin(username, password);
+                    if (logado) {
+                        System.out.println("Login realizado com sucesso");
+//                        loginPanel.setVisible(false);
+//                        mapPanel.setVisible(true);
+                    } else {
+                        System.out.println("Usuário ou senha inválidos");
+                    }
+                    // Implemente a lógica de login aqui
+                });
+                loginPanel.getCloseButton().addActionListener(e1 -> {
+                    loginPanel.setVisible(false);
+                    mapPanel.setVisible(true);
+                });
+
+            }
+
             NPC nearbyNPC = personagem.getNearbyNPC(logica.getNpcs());
             if (nearbyNPC != null) {
                 System.out.println("Interagindo com o NPC " + nearbyNPC.getNome());

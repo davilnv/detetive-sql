@@ -51,7 +51,7 @@ public class MapPanel extends BasePanel {
             g2d.drawImage(npc.getSprites()[npc.getAparencia()], npc.getX(), npc.getY(), null);
         }
 
-        // showColisionRectangle(g2d); // TODO: Mostar retângulos de colisão
+        showColisionRectangle(g2d); // TODO: Mostar retângulos de colisão
 
         g2d.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
         g2d.drawImage(logica.getCamada("top").camada, 0, 0, null);
@@ -79,6 +79,8 @@ public class MapPanel extends BasePanel {
         for (NPC npc : logica.getNpcs()) {
             g.drawRect((int) npc.getNPCRectangle().getX(), (int) npc.getNPCRectangle().getY(), (int) npc.getNPCRectangle().getWidth(), (int) npc.getNPCRectangle().getHeight());
         }
+
+        g.drawRect((int) logica.getComputador().getRectangle().getX(), (int) logica.getComputador().getRectangle().getY(), (int) logica.getComputador().getRectangle().getWidth(), (int) logica.getComputador().getRectangle().getHeight());
     }
 
 }

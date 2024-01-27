@@ -1,11 +1,13 @@
 package br.com.ihm.davilnv.view;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.Objects;
+import lombok.Getter;
 
+import javax.swing.*;
+import java.util.Objects;
+@Getter
 public abstract class BasePanel extends JPanel{
-	private String key;
+
+	private final String key;
 	public ImageIcon backgroundImage;
 
 	public BasePanel(String key, String imagePath) {
@@ -26,7 +28,4 @@ public abstract class BasePanel extends JPanel{
 		setVisible(false);
 	}
 
-	public String getKey() {
-		return key;
-	}
 }

@@ -56,6 +56,10 @@ public class Personagem extends Sprite {
         return true;
     }
 
+    public boolean getNearbyComputer(Computador computador) {
+        return personagemRectangle.intersects(computador.getRectangle());
+    }
+
     public NPC getNearbyNPC(List<NPC> npcList) {
         for (NPC npc : npcList) {
             if (personagemRectangle.intersects(npc.getNPCRectangle())) {
