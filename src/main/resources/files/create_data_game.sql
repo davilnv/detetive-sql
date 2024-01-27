@@ -35,7 +35,7 @@ VALUES ('sophie', 'ss#123', 'Sophie Campbell', 'sophie.ti@email.com', 'Suporte T
         DATEADD('DAY', -FLOOR(RAND() * 365), CURRENT_DATE())),
        ('james', 'jj#123', 'James Turner', 'turner@email.com', 'Zelador', TRUE,
         DATEADD('DAY', -FLOOR(RAND() * 365), CURRENT_DATE())),
-       ('detetive', 'detetive#123', 'Detetive', 'detetive@email.com', 'Detetive', TRUE,
+       ('detetive', '123', 'Detetive', 'detetive@email.com', 'Detetive', TRUE,
         CURRENT_DATE());
 
 -- Insere dados na tabela Acesso com a data de acesso

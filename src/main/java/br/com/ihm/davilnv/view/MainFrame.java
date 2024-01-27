@@ -16,6 +16,7 @@ public class MainFrame extends BaseFrame {
         panels.add(new LoadingPanel("loading", "/assets/images/background/background-frames.png"));
         panels.add(new MapPanel("map"));
         panels.add(new LoginPanel("login"));
+        panels.add(new MuseumSystemPanel("museum-system"));
 
         buttons.add(new GameButton("jogar", 0, 0, 0, 0));
         buttons.add(new GameButton("ranking", 80, 0, 0, 0));

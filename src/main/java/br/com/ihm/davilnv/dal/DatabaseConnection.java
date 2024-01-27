@@ -47,35 +47,6 @@ public class DatabaseConnection {
         return null;
     }
 
-    public static  ResultSet query(String sql) {
-        try (Connection conn = getConnection()) {
-            assert conn != null;
-            try (Statement stmt = conn.createStatement()) {
-                return stmt.executeQuery(sql);
-            }
-        } catch (SQLException e) {
-            ErrorHandler.logAndExit(e);
-        }
-        return null;
-    }
-
-    public static void createTable(String tableName) {
-        String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (\n"
-                + " id integer PRIMARY KEY,\n"
-                + " name text NOT NULL,\n"
-                + " email text NOT NULL UNIQUE\n"
-                + ");";
-
-        try (Connection conn = getConnection()) {
-            assert conn != null;
-            try (Statement stmt = conn.createStatement()) {
-                stmt.execute(sql);
-            }
-        } catch (SQLException e) {
-            ErrorHandler.logAndExit(e);
-        }
-    }
-
     public static void executeScript(String scriptPath) {
         try (Connection conn = getConnection()) {
             assert conn != null;

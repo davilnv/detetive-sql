@@ -18,6 +18,7 @@ import br.com.ihm.davilnv.view.components.GameButton;
 import lombok.Getter;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
 
 public class GameController extends KeyAdapter implements ActionListener {
     private MainFrame mainFrame;
@@ -196,6 +197,11 @@ public class GameController extends KeyAdapter implements ActionListener {
 
                 // Pega a instancia do LoginPanel
                 LoginPanel loginPanel = (LoginPanel) mainFrame.getPanelByKey("login");
+                MuseumSystemPanel museumSystemPanel = (MuseumSystemPanel) mainFrame.getPanelByKey("museum-system");
+               // Seta dados no MuseumSystemPanel
+                museumSystemPanel.setTableList(MuseumSystemBll.getTableNames());
+
+                // Esconde o MapPanel e mostra o LoginPanel
                 mapPanel.setVisible(false);
                 loginPanel.setVisible(true);
 
@@ -205,13 +211,21 @@ public class GameController extends KeyAdapter implements ActionListener {
                     String password = new String(loginPanel.getPasswordField().getPassword());
                     boolean logado = MuseumSystemBll.getLogin(username, password);
                     if (logado) {
-                        System.out.println("Login realizado com sucesso");
-//                        loginPanel.setVisible(false);
-//                        mapPanel.setVisible(true);
+                        // Realiza login, esconde o LoginPanel e mostra o MuseumSystemPanel
+                        System.out.println("Login realizado com sucesso"); // TODO: Remover isto aqui
+                        loginPanel.setVisible(false);
+                        museumSystemPanel.setVisible(true);
+
+                        // Adiciona ação ao botão de executar query e executa
+                        museumSystemPanel.getExecuteButton().addActionListener(e2 -> {
+                            String query = museumSystemPanel.getQueryField().getText();
+                            TableModel tableModel = MuseumSystemBll.executeQuery(query);
+                            museumSystemPanel.setResultTable(tableModel);
+                        });
+
                     } else {
-                        System.out.println("Usuário ou senha inválidos");
+                        System.out.println("Usuário ou senha inválidos"); // TODO: Mostrar mensagem de erro em um label vermelho, ativar e desativar
                     }
-                    // Implemente a lógica de login aqui
                 });
                 loginPanel.getCloseButton().addActionListener(e1 -> {
                     loginPanel.setVisible(false);

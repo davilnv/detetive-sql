@@ -1,5 +1,7 @@
 package br.com.ihm.davilnv.view;
 
+import br.com.ihm.davilnv.utils.ErrorHandler;
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +19,14 @@ public class LoginPanel extends BasePanel {
 
     public LoginPanel(String key) {
         super(key);
+
+        // Carrega o Tema FlatIntelliJLaf
+        try {
+            UIManager.setLookAndFeel(new FlatIntelliJLaf());
+        } catch (UnsupportedLookAndFeelException e) {
+            ErrorHandler.logAndExit(e);
+        }
+
         setLayout(null);
 
         Font defaultFont = BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 16);
