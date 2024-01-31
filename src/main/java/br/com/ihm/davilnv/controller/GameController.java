@@ -32,7 +32,6 @@ public class GameController extends KeyAdapter implements ActionListener {
     public static java.util.List<Rectangle> colisao;
 
 
-
     public GameController() {
 
         // Inicia a reprodução da música em uma thread separada
@@ -135,7 +134,8 @@ public class GameController extends KeyAdapter implements ActionListener {
                 @Override
                 protected void done() {
                     mainFrame.getPanelByKey("loading").setVisible(false);
-                    mainFrame.getPanelByKey("map").setVisible(true);
+                    mainFrame.getPanelByKey("newspaper").setVisible(true);
+                    //mainFrame.getPanelByKey("map").setVisible(true);
                 }
             };
 
@@ -190,6 +190,37 @@ public class GameController extends KeyAdapter implements ActionListener {
             System.out.println("Pause game");
         }
 
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            NewspaperPanel newspaperPanel = (NewspaperPanel) mainFrame.getPanelByKey("newspaper");
+            if (newspaperPanel.isFinished()) {
+                // Inicia a tela de loading
+                mainFrame.getPanelByKey("loading").setVisible(true);
+                newspaperPanel.setVisible(false);
+
+                // Cria um SwingWorker para executar o carregamento em segundo plano
+                SwingWorker<Void, Void> worker = new SwingWorker<>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        newspaperPanel.getTimer().stop();
+                        Thread.sleep(3000);  // Dorme por 3 segundos
+                        return null;
+                    }
+
+                    @Override
+                    protected void done() {
+                        // Quando o carregamento estiver concluído, esconde a tela de loading e mostra o mapPanel
+                        mainFrame.getPanelByKey("loading").setVisible(false);
+                        mapPanel.setVisible(true);
+                    }
+                };
+
+                // Inicia o SwingWorker
+                worker.execute();
+            } else {
+                newspaperPanel.nextDialogue();
+            }
+        }
+
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
             if (personagem.getNearbyComputer(logica.getComputador())) {
@@ -198,7 +229,7 @@ public class GameController extends KeyAdapter implements ActionListener {
                 // Pega a instancia do LoginPanel
                 LoginPanel loginPanel = (LoginPanel) mainFrame.getPanelByKey("login");
                 MuseumSystemPanel museumSystemPanel = (MuseumSystemPanel) mainFrame.getPanelByKey("museum-system");
-               // Seta dados no MuseumSystemPanel
+                // Seta dados no MuseumSystemPanel
                 museumSystemPanel.setTableList(MuseumSystemBll.getTableNames());
 
                 // Esconde o MapPanel e mostra o LoginPanel
