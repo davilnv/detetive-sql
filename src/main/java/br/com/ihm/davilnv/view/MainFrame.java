@@ -7,6 +7,7 @@ public class MainFrame extends BaseFrame {
     public MainFrame() {
         super();
 
+        // TODO: Implementar o CardLayout para trocar entre os painéis
         panels.add(new MenuPanel("menu", "/assets/images/background/background-frames-menu.png"));
         panels.add(new StartPanel("start", "/assets/images/background/background-frames-inicio.png"));
         panels.add(new RankingPanel("ranking", "/assets/images/background/background-frames-ranking.png"));
@@ -17,6 +18,7 @@ public class MainFrame extends BaseFrame {
         panels.add(new MapPanel("map"));
         panels.add(new LoginPanel("login"));
         panels.add(new MuseumSystemPanel("museum-system"));
+        panels.add(new NewspaperPanel("newspaper"));
 
         buttons.add(new GameButton("jogar", 0, 0, 0, 0));
         buttons.add(new GameButton("ranking", 80, 0, 0, 0));
