@@ -3,6 +3,7 @@ package br.com.ihm.davilnv.bll;
 import br.com.ihm.davilnv.dal.MuseumSystemDal;
 
 import javax.swing.table.TableModel;
+import java.sql.SQLException;
 
 public class MuseumSystemBll {
     public static boolean getLogin(String username, String password) {
@@ -13,7 +14,7 @@ public class MuseumSystemBll {
         return MuseumSystemDal.getTableNames();
     }
 
-    public static TableModel executeQuery(String query) {
+    public static TableModel executeQuery(String query) throws SQLException {
         return MuseumSystemDal.executeQuery(query);
     }
 }

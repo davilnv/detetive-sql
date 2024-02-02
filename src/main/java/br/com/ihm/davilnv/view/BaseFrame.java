@@ -26,9 +26,9 @@ public abstract class BaseFrame extends JFrame{
 
 	static {
 		try {
-			String fName = "/assets/fonts/aesymatt.ttf";
-			InputStream is = BaseFrame.class.getResourceAsStream(fName);
-			DEFAULT_FONT = Font.createFont(Font.TRUETYPE_FONT, is);
+			InputStream is = BaseFrame.class.getResourceAsStream("/assets/fonts/aesymatt.ttf");
+            assert is != null;
+            DEFAULT_FONT = Font.createFont(Font.TRUETYPE_FONT, is);
 		} catch (FontFormatException | IOException e) {
 			System.err.println("Erro ao carregar fonte");
 			throw new RuntimeException(e);
@@ -102,6 +102,10 @@ public abstract class BaseFrame extends JFrame{
 		enableAllButtons();
 		getPanelByKey(panelKey).setVisible(false);
 		getButtonByKey(DEFAULT_BACK_BUTTON_KEY).setVisible(false);
+	}
+
+	public static Font getFont(int size) {
+		return DEFAULT_FONT.deriveFont(Font.BOLD, size);
 	}
 
 }

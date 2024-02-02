@@ -15,11 +15,13 @@ public class MapPanel extends BasePanel {
     private Logica logica;
     private Personagem personagem;
     private Image offscreenImage;
+    private DialogBox dialogBox;
 
     private static final double ZOOM_LEVEL = 2.0;
 
     public MapPanel(String key) {
         super(key);
+        dialogBox = new DialogBox();
         setDoubleBuffered(true);
     }
 
@@ -54,8 +56,14 @@ public class MapPanel extends BasePanel {
 //        showColisionRectangle(g2d); // TODO: Mostar retângulos de colisão
 
         g2d.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
+
         g2d.drawImage(logica.getCamada("top").camada, 0, 0, null);
         g2d.drawImage(logica.getCamada("front-top").camada, 0, 0, null);
+
+
+        if (dialogBox.isVisible()) {
+            dialogBox.draw(g2d, personagem.getNearbyNPC().getX(), personagem.getNearbyNPC().getY());
+        }
 
         // TODO: FPS
 //		g2d.setColor(Color.WHITE);

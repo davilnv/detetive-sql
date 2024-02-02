@@ -2,6 +2,7 @@ package br.com.ihm.davilnv.view;
 
 import br.com.ihm.davilnv.model.Dialog;
 import br.com.ihm.davilnv.model.Scene;
+import br.com.ihm.davilnv.statics.Character;
 import br.com.ihm.davilnv.statics.SceneInfo;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,7 +51,7 @@ public class NewspaperPanel extends BasePanel {
         dialogueBox.setWrapStyleWord(true);
         dialogueBox.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 20));
 
-        dialogues = SceneInfo.dialogues;
+        dialogues = SceneInfo.dialoguesNewspaper;
         currentDialogueIndex = 0;
         dialogueBox.setText(dialogues[currentDialogueIndex].getText());
 
@@ -101,10 +102,10 @@ public class NewspaperPanel extends BasePanel {
         }
         Dialog currentDialogue = dialogues[currentDialogueIndex];
         dialogueBox.setText(currentDialogue.getText());
-        if (currentDialogue.getCharacter().equals(SceneInfo.DIRECTOR)) {
+        if (currentDialogue.getCharacter().equals(Character.DIRECTOR)) {
             characterSprite = sceneDirector.getSubScenes().get(0);
             newsBackground = newsBackgroundDiamond;
-        } else if (currentDialogue.getCharacter().equals(SceneInfo.NEWSCASTER)) {
+        } else if (currentDialogue.getCharacter().equals(Character.NEWSCASTER)) {
             characterSprite = sceneNewscaster.getSubScenes().get(currentDialogueIndex);
         }
         repaint();

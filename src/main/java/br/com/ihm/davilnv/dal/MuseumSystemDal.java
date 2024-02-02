@@ -46,16 +46,12 @@ public class MuseumSystemDal {
         return tableNames.toArray(new String[0]);
     }
 
-    public static TableModel executeQuery(String query) {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            assert conn != null;
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            return buildTableModel(rs);
-        } catch (SQLException e) {
-            ErrorHandler.logAndExit(e);
-        }
-        return null;
+    public static TableModel executeQuery(String query) throws SQLException {
+        Connection conn = DatabaseConnection.getConnection();
+        assert conn != null;
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        return buildTableModel(rs);
     }
 
     private static TableModel buildTableModel(ResultSet rs) throws SQLException {

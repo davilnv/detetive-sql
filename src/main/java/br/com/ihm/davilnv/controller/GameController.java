@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import br.com.ihm.davilnv.bll.MuseumSystemBll;
 import br.com.ihm.davilnv.dal.DatabaseConnection;
@@ -16,13 +17,15 @@ import br.com.ihm.davilnv.utils.MusicPlayer;
 import br.com.ihm.davilnv.view.*;
 import br.com.ihm.davilnv.view.components.GameButton;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
 
+@Getter
+@Setter
 public class GameController extends KeyAdapter implements ActionListener {
     private MainFrame mainFrame;
-    @Getter
     private MapPanel mapPanel;
     private Logica logica;
     private Personagem personagem;
@@ -30,7 +33,7 @@ public class GameController extends KeyAdapter implements ActionListener {
     private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]; // TODO : Mudar para monitor 0
     private static final int TARGET_FPS = 60;
     public static java.util.List<Rectangle> colisao;
-
+    private boolean isRunning;
 
     public GameController() {
 
@@ -92,7 +95,6 @@ public class GameController extends KeyAdapter implements ActionListener {
         for (NPC npc : logica.getNpcs()) {
             colisao.add(npc.getPersonagemRectangle());
         }
-//        colisao.add(logica.getComputador().getRectangle());
 
         // Chama  a inicialização do banco de dados
         DatabaseConnection.executeScript("/files/create_data_game.sql");
@@ -185,12 +187,83 @@ public class GameController extends KeyAdapter implements ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (mapPanel != null)
+            isRunning = !mapPanel.getDialogBox().isVisible();
 
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             System.out.println("Pause game");
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            if (personagem.getNearbyComputer(logica.getComputador())) {
+
+                // Pega a instancia do LoginPanel
+                LoginPanel loginPanel = (LoginPanel) mainFrame.getPanelByKey("login");
+                MuseumSystemPanel museumSystemPanel = (MuseumSystemPanel) mainFrame.getPanelByKey("museum-system");
+                // Seta dados no MuseumSystemPanel
+                museumSystemPanel.setTableList(MuseumSystemBll.getTableNames());
+
+                // Esconde o MapPanel e mostra o LoginPanel
+                mapPanel.setVisible(false);
+                loginPanel.setVisible(true);
+
+                // Adiciona ações aos botões
+                loginPanel.getLoginButton().addActionListener(e1 -> {
+                    String username = loginPanel.getUsernameField().getText().toLowerCase().trim();
+                    String password = new String(loginPanel.getPasswordField().getPassword());
+                    boolean logado = MuseumSystemBll.getLogin(username, password);
+                    if (logado) {
+                        if (loginPanel.getErrorLabel().isVisible())
+                            loginPanel.getErrorLabel().setVisible(false);
+                        // Realiza login, esconde o LoginPanel e mostra o MuseumSystemPanel
+                        loginPanel.getUsernameField().setText(null);
+                        loginPanel.getPasswordField().setText(null);
+                        loginPanel.setVisible(false);
+                        museumSystemPanel.setVisible(true);
+
+                        // Adiciona ação ao botão de executar query e executa
+                        museumSystemPanel.getExecuteButton().addActionListener(e2 -> {
+                            String query = museumSystemPanel.getQueryField().getText();
+                            TableModel tableModel;
+                            try {
+                                tableModel = MuseumSystemBll.executeQuery(query);
+                                museumSystemPanel.setResultTable(tableModel);
+                            } catch (SQLException ex) {
+                                museumSystemPanel.setResultError(ex.getMessage());
+                            }
+                        });
+
+                    } else {
+                        loginPanel.getErrorLabel().setText("Usuário ou senha inválidos");
+                        loginPanel.getErrorLabel().setVisible(true);
+                        loginPanel.repaint();
+                    }
+                });
+
+                loginPanel.getCloseButton().addActionListener(e1 -> {
+                    loginPanel.setVisible(false);
+                    mapPanel.setVisible(true);
+                });
+
+                museumSystemPanel.getCloseButton().addActionListener(e1 -> {
+                    museumSystemPanel.setVisible(false);
+                    mapPanel.setVisible(true);
+                });
+
+            }
+
+            // Preenche o NPC que está próximo do personagem
+            NPC nearbyNPC = personagem.getNearbyNPC(logica.getNpcs());
+            if (nearbyNPC != null) {
+                mapPanel.getDialogBox().setDialogues(nearbyNPC.getDialogues());
+                mapPanel.getDialogBox().setScene(nearbyNPC.getScene());
+                mapPanel.getDialogBox().setVisible(true);
+            }
+
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && mainFrame.getCurrentPanel().getKey().equals("newspaper")) {
             NewspaperPanel newspaperPanel = (NewspaperPanel) mainFrame.getPanelByKey("newspaper");
             if (newspaperPanel.isFinished()) {
                 // Inicia a tela de loading
@@ -221,89 +294,45 @@ public class GameController extends KeyAdapter implements ActionListener {
             }
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && mapPanel.isVisible() && personagem.getNearbyNPC() != null) {
+            mapPanel.getDialogBox().nextDialogue();
+            mapPanel.getDialogBox().nextScene();
+        }
 
-            if (personagem.getNearbyComputer(logica.getComputador())) {
-                System.out.println("Interagindo com o computador");
-
-                // Pega a instancia do LoginPanel
-                LoginPanel loginPanel = (LoginPanel) mainFrame.getPanelByKey("login");
-                MuseumSystemPanel museumSystemPanel = (MuseumSystemPanel) mainFrame.getPanelByKey("museum-system");
-                // Seta dados no MuseumSystemPanel
-                museumSystemPanel.setTableList(MuseumSystemBll.getTableNames());
-
-                // Esconde o MapPanel e mostra o LoginPanel
-                mapPanel.setVisible(false);
-                loginPanel.setVisible(true);
-
-                // Adiciona ações aos botões
-                loginPanel.getLoginButton().addActionListener(e1 -> {
-                    String username = loginPanel.getUsernameField().getText();
-                    String password = new String(loginPanel.getPasswordField().getPassword());
-                    boolean logado = MuseumSystemBll.getLogin(username, password);
-                    if (logado) {
-                        // Realiza login, esconde o LoginPanel e mostra o MuseumSystemPanel
-                        System.out.println("Login realizado com sucesso"); // TODO: Remover isto aqui
-                        loginPanel.setVisible(false);
-                        museumSystemPanel.setVisible(true);
-
-                        // Adiciona ação ao botão de executar query e executa
-                        museumSystemPanel.getExecuteButton().addActionListener(e2 -> {
-                            String query = museumSystemPanel.getQueryField().getText();
-                            TableModel tableModel = MuseumSystemBll.executeQuery(query);
-                            museumSystemPanel.setResultTable(tableModel);
-                        });
-
-                    } else {
-                        System.out.println("Usuário ou senha inválidos"); // TODO: Mostrar mensagem de erro em um label vermelho, ativar e desativar
-                    }
-                });
-                loginPanel.getCloseButton().addActionListener(e1 -> {
-                    loginPanel.setVisible(false);
-                    mapPanel.setVisible(true);
-                });
-
+        if (isRunning) {
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+                personagem.setCima(true);
+                personagem.setLastDirectionPressed(Personagem.Direction.UP);
+            }
+            if (e.getKeyCode() == KeyEvent.VK_S) {
+                personagem.setBaixo(true);
+                personagem.setLastDirectionPressed(Personagem.Direction.DOWN);
+            }
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                personagem.setEsquerda(true);
+                personagem.setLastDirectionPressed(Personagem.Direction.LEFT);
+            }
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                personagem.setDireita(true);
+                personagem.setLastDirectionPressed(Personagem.Direction.RIGHT);
             }
 
-            NPC nearbyNPC = personagem.getNearbyNPC(logica.getNpcs());
-            if (nearbyNPC != null) {
-                System.out.println("Interagindo com o NPC " + nearbyNPC.getNome());
-                // Execute a ação desejada com o NPC
-                // Por exemplo, você pode chamar um método do NPC:
-                //nearbyNPC.interact();
-            }
+            personagem.movimento();
         }
-
-        if (e.getKeyCode() == KeyEvent.VK_W) {
-            personagem.setCima(true);
-            personagem.setLastDirectionPressed(Personagem.Direction.UP);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            personagem.setBaixo(true);
-            personagem.setLastDirectionPressed(Personagem.Direction.DOWN);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            personagem.setEsquerda(true);
-            personagem.setLastDirectionPressed(Personagem.Direction.LEFT);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            personagem.setDireita(true);
-            personagem.setLastDirectionPressed(Personagem.Direction.RIGHT);
-        }
-
-        personagem.movimento();
-
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_W) personagem.setCima(false);
-        if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(false);
-        if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(false);
-        if (e.getKeyCode() == KeyEvent.VK_D) personagem.setDireita(false);
 
-        if (!personagem.isCima() && !personagem.isBaixo() && !personagem.isEsquerda() && !personagem.isDireita()) {
-            personagem.setLastDirectionPressed(null);
+        if (isRunning) {
+            if (e.getKeyCode() == KeyEvent.VK_W) personagem.setCima(false);
+            if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(false);
+            if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(false);
+            if (e.getKeyCode() == KeyEvent.VK_D) personagem.setDireita(false);
+
+            if (!personagem.isCima() && !personagem.isBaixo() && !personagem.isEsquerda() && !personagem.isDireita()) {
+                personagem.setLastDirectionPressed(null);
+            }
         }
     }
 

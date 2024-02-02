@@ -18,6 +18,7 @@ public class Personagem extends Sprite {
     private boolean cima, baixo, direita, esquerda;
     private int up, down, left, right;
     private Direction lastDirectionPressed = null;
+    private NPC nearbyNPC;
 
     public enum Direction {
         UP, DOWN, LEFT, RIGHT
@@ -74,9 +75,11 @@ public class Personagem extends Sprite {
     public NPC getNearbyNPC(List<NPC> npcList) {
         for (NPC npc : npcList) {
             if (personagemRectangle.intersects(npc.getNPCRectangle())) {
+                this.nearbyNPC = npc;
                 return npc;
             }
         }
+        this.nearbyNPC = null;
         return null;
     }
 

@@ -16,6 +16,7 @@ public class LoginPanel extends BasePanel {
     private JPasswordField passwordField;
     private JButton loginButton;
     private JButton closeButton;
+    private JLabel errorLabel;
 
     public LoginPanel(String key) {
         super(key);
@@ -80,6 +81,13 @@ public class LoginPanel extends BasePanel {
         loginButton.setFont(defaultFont);
         loginButton.setBounds(defaultX, passwordField.getY() + passwordField.getHeight() + 20, 200, 30);
         add(loginButton);
+
+        errorLabel = new JLabel();
+        errorLabel.setForeground(Color.RED);
+        errorLabel.setVisible(false);
+        errorLabel.setFont(BaseFrame.getFont(12));
+        errorLabel.setBounds(defaultX + 25, loginButton.getY() + loginButton.getHeight() + 5, 200, 30);
+        add(errorLabel);
     }
 
 }
