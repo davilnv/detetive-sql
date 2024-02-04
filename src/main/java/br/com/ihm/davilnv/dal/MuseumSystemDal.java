@@ -1,7 +1,7 @@
 package br.com.ihm.davilnv.dal;
 
 import br.com.ihm.davilnv.utils.ErrorHandler;
-import br.com.ihm.davilnv.utils.StaticQuerySQL;
+import br.com.ihm.davilnv.statics.StaticQuerySQL;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;

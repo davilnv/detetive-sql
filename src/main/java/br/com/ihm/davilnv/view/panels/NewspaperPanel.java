@@ -1,9 +1,10 @@
-package br.com.ihm.davilnv.view;
+package br.com.ihm.davilnv.view.panels;
 
 import br.com.ihm.davilnv.model.Dialog;
-import br.com.ihm.davilnv.model.Scene;
 import br.com.ihm.davilnv.statics.Character;
 import br.com.ihm.davilnv.statics.SceneInfo;
+import br.com.ihm.davilnv.view.components.Scene;
+import br.com.ihm.davilnv.view.frames.BaseFrame;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,4 +1,4 @@
-package br.com.ihm.davilnv.view;
+package br.com.ihm.davilnv.view.panels;
 
 import java.awt.*;
 

@@ -1,13 +1,15 @@
-package br.com.ihm.davilnv.view;
+package br.com.ihm.davilnv.view.panels;
 
 import br.com.ihm.davilnv.utils.MusicPlayer;
 import br.com.ihm.davilnv.view.components.GameCustomSlider;
+import br.com.ihm.davilnv.view.frames.BaseFrame;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 
+@Getter
+@Setter
 public class ConfigPanel extends BasePanel {
 
 	private MusicPlayer musicPlayer;
@@ -41,18 +43,11 @@ public class ConfigPanel extends BasePanel {
 		volumeSlider.setBackground(BaseFrame.DEFAULT_COLOR);
 		volumeSlider.setForeground(Color.BLACK);
 
-		volumeSlider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				int volume = volumeSlider.getValue();
-				musicPlayer.setVolume(volume / 100.0);
-			}
-		});
+		volumeSlider.addChangeListener(e -> {
+            int volume1 = volumeSlider.getValue();
+            musicPlayer.setVolume(volume1 / 100.0);
+        });
 		this.add(volumeSlider);
-	}
-
-	public void setMusicPlayer(MusicPlayer musicPlayer) {
-		this.musicPlayer = musicPlayer;
 	}
 
 }

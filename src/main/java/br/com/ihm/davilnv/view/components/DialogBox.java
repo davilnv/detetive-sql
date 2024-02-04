@@ -1,7 +1,8 @@
-package br.com.ihm.davilnv.model;
+package br.com.ihm.davilnv.view.components;
 
-import br.com.ihm.davilnv.view.BaseFrame;
-import br.com.ihm.davilnv.view.NewspaperPanel;
+import br.com.ihm.davilnv.model.Dialog;
+import br.com.ihm.davilnv.utils.StringOptionsUtils;
+import br.com.ihm.davilnv.view.frames.BaseFrame;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,7 +38,7 @@ public class DialogBox {
     ImageIcon spaceKeyIcon;
 
     public DialogBox() {
-        spaceKeyIcon = new ImageIcon(Objects.requireNonNull(NewspaperPanel.class.getResource("/assets/images/icons/space-keyboard-50-perc.png")));
+        spaceKeyIcon = new ImageIcon(Objects.requireNonNull(DialogBox.class.getResource("/assets/images/icons/space-keyboard-50-perc.png")));
     }
 
     public void nextDialogue() {
@@ -93,20 +94,7 @@ public class DialogBox {
         int curX = x + TEXT_X_OFFSET;
         int curY = y + TEXT_Y_OFFSET;
 
-        String[] words = text.split(" ");
-        StringBuilder curLine = new StringBuilder(words[0]);
-
-        for (int i = 1; i < words.length; i++) {
-            int width = fm.stringWidth(curLine + " " + words[i]);
-            if (width < TEXT_MAX_WIDTH) {
-                curLine.append(" ").append(words[i]);
-            } else {
-                g2d.drawString(curLine.toString(), curX, curY);
-                curY += lineHeight;
-                curLine = new StringBuilder(words[i]);
-            }
-        }
-        g2d.drawString(curLine.toString(), curX, curY);
+        StringOptionsUtils.getTextOnLInes(g2d, fm, text, lineHeight, curX, curY, TEXT_MAX_WIDTH);
     }
 
     private void drawCharacterSprite(Graphics2D g2d, int x, int y) {

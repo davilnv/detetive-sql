@@ -1,4 +1,6 @@
-package br.com.ihm.davilnv.view;
+package br.com.ihm.davilnv.view.panels;
+
+import br.com.ihm.davilnv.view.frames.BaseFrame;
 
 import java.awt.*;
 

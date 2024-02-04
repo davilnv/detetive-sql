@@ -1,6 +1,7 @@
-package br.com.ihm.davilnv.view;
+package br.com.ihm.davilnv.view.panels;
 
 import br.com.ihm.davilnv.utils.ErrorHandler;
+import br.com.ihm.davilnv.view.frames.BaseFrame;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import lombok.Getter;
 import lombok.Setter;

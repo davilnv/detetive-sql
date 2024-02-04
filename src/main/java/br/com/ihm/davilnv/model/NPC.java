@@ -1,5 +1,6 @@
 package br.com.ihm.davilnv.model;
 
+import br.com.ihm.davilnv.view.components.Scene;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +8,7 @@ import java.awt.*;
 
 @Getter
 @Setter
-public class NPC extends Personagem {
+public class NPC extends Player {
 
     private String nome;
     private String profissao;

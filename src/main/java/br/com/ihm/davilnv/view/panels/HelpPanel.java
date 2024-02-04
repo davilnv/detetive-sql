@@ -1,16 +1,17 @@
-package br.com.ihm.davilnv.view;
+package br.com.ihm.davilnv.view.panels;
 
+import br.com.ihm.davilnv.view.frames.BaseFrame;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
-
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Objects;
 
-public class CreditPanel extends BasePanel {
-	public CreditPanel(String key, String imageBackground) {
+public class HelpPanel extends BasePanel {
+
+	public HelpPanel(String key, String imageBackground) {
 		super(key, imageBackground);
 		setLayout(null);
 		initTutorialTextAreaV2();
@@ -25,13 +26,12 @@ public class CreditPanel extends BasePanel {
 		Platform.runLater(() -> {
 			WebView webView = new WebView();
 			webView.getEngine().load(
-					Objects.requireNonNull(HelpPanel.class.getResource("/files/credit-text.html")).toExternalForm()
+					Objects.requireNonNull(HelpPanel.class.getResource("/files/help-text.html")).toExternalForm()
 			);
 
 			fxPanel.setScene(new Scene(webView));
 		});
 	}
-
 
 	@Override
 	protected void paintComponent(Graphics g) {

@@ -1,7 +1,9 @@
-package br.com.ihm.davilnv.view;
+package br.com.ihm.davilnv.view.panels;
 
 import br.com.ihm.davilnv.controller.GameController;
 import br.com.ihm.davilnv.model.*;
+import br.com.ihm.davilnv.view.components.DialogBox;
+import br.com.ihm.davilnv.view.components.Phone;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,16 +14,18 @@ import java.awt.image.BufferedImage;
 @Setter
 public class MapPanel extends BasePanel {
 
-    private Logica logica;
-    private Personagem personagem;
+    private Logic logic;
+    private Player player;
     private Image offscreenImage;
     private DialogBox dialogBox;
+    private Phone phone;
 
     private static final double ZOOM_LEVEL = 2.0;
 
     public MapPanel(String key) {
         super(key);
         dialogBox = new DialogBox();
+        phone = new Phone();
         setDoubleBuffered(true);
     }
 
@@ -39,30 +43,34 @@ public class MapPanel extends BasePanel {
         super.paintComponent(offscreenGraphics);
         Graphics2D g2d = (Graphics2D) offscreenGraphics;
 
-        double xOffset = personagem.getX() - getWidth() / (2 * ZOOM_LEVEL);
-        double yOffset = personagem.getY() - getHeight() / (2 * ZOOM_LEVEL);
+        double xOffset = player.getX() - getWidth() / (2 * ZOOM_LEVEL);
+        double yOffset = player.getY() - getHeight() / (2 * ZOOM_LEVEL);
 
         g2d.scale(ZOOM_LEVEL, ZOOM_LEVEL);
         g2d.translate(-xOffset, -yOffset);
 
-        g2d.drawImage(logica.getCamada("floor").camada, 0, 0, null);
-        g2d.drawImage(logica.getCamada("second-floor").camada, 0, 0, null);
-        g2d.drawImage(logica.getCamada("colision").camada, 0, 0, null);
+        g2d.drawImage(logic.getLayer("floor").layerImage, 0, 0, null);
+        g2d.drawImage(logic.getLayer("second-floor").layerImage, 0, 0, null);
+        g2d.drawImage(logic.getLayer("colision").layerImage, 0, 0, null);
 
-        for (NPC npc : logica.getNpcs()) {
+        for (NPC npc : logic.getNpcs()) {
             g2d.drawImage(npc.getSprites()[npc.getAparencia()], npc.getX(), npc.getY(), null);
         }
 
 //        showColisionRectangle(g2d); // TODO: Mostar retângulos de colisão
 
-        g2d.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
+        g2d.drawImage(player.getSprites()[player.getAparencia()], player.getX(), player.getY(), null);
 
-        g2d.drawImage(logica.getCamada("top").camada, 0, 0, null);
-        g2d.drawImage(logica.getCamada("front-top").camada, 0, 0, null);
+        g2d.drawImage(logic.getLayer("top").layerImage, 0, 0, null);
+        g2d.drawImage(logic.getLayer("front-top").layerImage, 0, 0, null);
 
 
         if (dialogBox.isVisible()) {
-            dialogBox.draw(g2d, personagem.getNearbyNPC().getX(), personagem.getNearbyNPC().getY());
+            dialogBox.draw(g2d, player.getNearbyNPC().getX(), player.getNearbyNPC().getY());
+        }
+
+        if (phone.isVisible()) {
+            phone.draw(g2d, player.getX(), player.getY());
         }
 
         // TODO: FPS
@@ -82,13 +90,13 @@ public class MapPanel extends BasePanel {
         for (Rectangle collisionRect : GameController.colisao) {
             g.drawRect(collisionRect.x, collisionRect.y, collisionRect.width, collisionRect.height);
         }
-        g.drawRect((int) personagem.getPersonagemRectangle().getX(), (int) personagem.getPersonagemRectangle().getY(), (int) personagem.getPersonagemRectangle().getWidth(), (int) personagem.getPersonagemRectangle().getHeight());
+        g.drawRect((int) player.getPersonagemRectangle().getX(), (int) player.getPersonagemRectangle().getY(), (int) player.getPersonagemRectangle().getWidth(), (int) player.getPersonagemRectangle().getHeight());
 
-        for (NPC npc : logica.getNpcs()) {
+        for (NPC npc : logic.getNpcs()) {
             g.drawRect((int) npc.getNPCRectangle().getX(), (int) npc.getNPCRectangle().getY(), (int) npc.getNPCRectangle().getWidth(), (int) npc.getNPCRectangle().getHeight());
         }
 
-        g.drawRect((int) logica.getComputador().getRectangle().getX(), (int) logica.getComputador().getRectangle().getY(), (int) logica.getComputador().getRectangle().getWidth(), (int) logica.getComputador().getRectangle().getHeight());
+        g.drawRect((int) logic.getComputer().getRectangle().getX(), (int) logic.getComputer().getRectangle().getY(), (int) logic.getComputer().getRectangle().getWidth(), (int) logic.getComputer().getRectangle().getHeight());
     }
 
 }

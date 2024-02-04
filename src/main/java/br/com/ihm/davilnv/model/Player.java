@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Personagem extends Sprite {
+public class Player extends Sprite {
     private int vida;
     private int pontos;
     private Rectangle personagemRectangle;
@@ -24,7 +24,7 @@ public class Personagem extends Sprite {
         UP, DOWN, LEFT, RIGHT
     }
 
-    public Personagem(int aparencia, int largura, int altura, int colunas, int linhas, int x, int y, String endereco) {
+    public Player(int aparencia, int largura, int altura, int colunas, int linhas, int x, int y, String endereco) {
         super(aparencia, largura, altura, colunas, linhas, x, y, endereco);
         vida = 100;
         getRectangle(0, 0);
@@ -32,23 +32,23 @@ public class Personagem extends Sprite {
 
     @Override
     public void movimento() {
-        if (cima && getY() > Personagem.DIFF_COLISAO) {
-            setY(getY() - Personagem.VELOCIDADE);
+        if (cima && getY() > Player.DIFF_COLISAO) {
+            setY(getY() - Player.VELOCIDADE);
             setAparencia(8 + (up * 21));
             up = (up == 10) ? 0 : up + 1;
         }
-        if (baixo && getY() < 1016 - Personagem.DIFF_COLISAO) {
-            setY(getY() + Personagem.VELOCIDADE);
+        if (baixo && getY() < 1016 - Player.DIFF_COLISAO) {
+            setY(getY() + Player.VELOCIDADE);
             setAparencia(10 + (down * 21));
             down = (down == 10) ? 0 : down + 1;
         }
-        if (esquerda && getX() > Personagem.DIFF_COLISAO) {
-            setX(getX() - Personagem.VELOCIDADE);
+        if (esquerda && getX() > Player.DIFF_COLISAO) {
+            setX(getX() - Player.VELOCIDADE);
             setAparencia(9 + (left * 21));
             left = (left == 10) ? 0 : left + 1;
         }
-        if (direita && getX() < 1856 - Personagem.DIFF_COLISAO) {
-            setX(getX() + Personagem.VELOCIDADE);
+        if (direita && getX() < 1856 - Player.DIFF_COLISAO) {
+            setX(getX() + Player.VELOCIDADE);
             setAparencia(11 + (right * 21));
             right = (right == 10) ? 0 : right + 1;
         }
@@ -68,8 +68,8 @@ public class Personagem extends Sprite {
         return true;
     }
 
-    public boolean getNearbyComputer(Computador computador) {
-        return personagemRectangle.intersects(computador.getRectangle());
+    public boolean getNearbyComputer(Computer computer) {
+        return personagemRectangle.intersects(computer.getRectangle());
     }
 
     public NPC getNearbyNPC(List<NPC> npcList) {
@@ -81,23 +81,6 @@ public class Personagem extends Sprite {
         }
         this.nearbyNPC = null;
         return null;
-    }
-
-    public String getStatus(int win, int lose) {
-        if (vida == lose) {
-            return "Game Over!";
-        }
-        if (pontos == win) {
-            return "Ganhou!!!";
-        }
-        return "";
-
-    }
-
-    public void reset(int posX, int posY) {
-        setLocale(posX, posY);
-        vida = 100;
-        pontos = 0;
     }
 
     @Override

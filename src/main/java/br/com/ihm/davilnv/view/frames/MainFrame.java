@@ -1,6 +1,7 @@
-package br.com.ihm.davilnv.view;
+package br.com.ihm.davilnv.view.frames;
 
 import br.com.ihm.davilnv.view.components.GameButton;
+import br.com.ihm.davilnv.view.panels.*;
 
 public class MainFrame extends BaseFrame {
 

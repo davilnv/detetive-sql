@@ -1,4 +1,4 @@
-package br.com.ihm.davilnv.model;
+package br.com.ihm.davilnv.view.components;
 
 import br.com.ihm.davilnv.utils.ErrorHandler;
 import lombok.Getter;

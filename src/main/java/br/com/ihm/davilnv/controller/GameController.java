@@ -14,8 +14,9 @@ import br.com.ihm.davilnv.model.*;
 import br.com.ihm.davilnv.utils.Config;
 import br.com.ihm.davilnv.utils.ErrorHandler;
 import br.com.ihm.davilnv.utils.MusicPlayer;
-import br.com.ihm.davilnv.view.*;
 import br.com.ihm.davilnv.view.components.GameButton;
+import br.com.ihm.davilnv.view.frames.MainFrame;
+import br.com.ihm.davilnv.view.panels.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,8 +28,8 @@ import javax.swing.table.TableModel;
 public class GameController extends KeyAdapter implements ActionListener {
     private MainFrame mainFrame;
     private MapPanel mapPanel;
-    private Logica logica;
-    private Personagem personagem;
+    private Logic logic;
+    private Player player;
     private MusicPlayer introGamePlayer;
     private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]; // TODO : Mudar para monitor 0
     private static final int TARGET_FPS = 60;
@@ -67,7 +68,7 @@ public class GameController extends KeyAdapter implements ActionListener {
 
         mainFrame = new MainFrame();
         // TODO: Mudar posição do personagem para iniciar na porta do museu
-        personagem = new Personagem(8, 64, 64, 13, 21, 136, 212, "/assets/images/sprite/sprite-detective_universal.png");
+        player = new Player(8, 64, 64, 13, 21, 136, 212, "/assets/images/sprite/sprite-detective_universal.png");
 
         DEVICE.setFullScreenWindow(mainFrame);
 
@@ -82,17 +83,17 @@ public class GameController extends KeyAdapter implements ActionListener {
     }
 
     private void iniciarJogo() {
-        logica = new Logica();
+        logic = new Logic();
 
         // Carrega a instancia da classe MapPanel e seta dados iniciais
         mapPanel = (MapPanel) mainFrame.getPanelByKey("map");
         mapPanel.createOffscreenImage();
-        mapPanel.setLogica(logica);
-        mapPanel.setPersonagem(personagem);
+        mapPanel.setLogic(logic);
+        mapPanel.setPlayer(player);
 
         // Carrega as colisoes
-        colisao = logica.getCamada("colision").montarColisao();
-        for (NPC npc : logica.getNpcs()) {
+        colisao = logic.getLayer("colision").buildColision();
+        for (NPC npc : logic.getNpcs()) {
             colisao.add(npc.getPersonagemRectangle());
         }
 
@@ -105,8 +106,8 @@ public class GameController extends KeyAdapter implements ActionListener {
     }
 
     public void montarMapa() {
-        for (Camada camada : logica.getCamadas()) {
-            camada.montarMapa();
+        for (Layer layer : logic.getLayers()) {
+            layer.buildMap();
         }
     }
 
@@ -196,7 +197,7 @@ public class GameController extends KeyAdapter implements ActionListener {
 
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
-            if (personagem.getNearbyComputer(logica.getComputador())) {
+            if (player.getNearbyComputer(logic.getComputer())) {
 
                 // Pega a instancia do LoginPanel
                 LoginPanel loginPanel = (LoginPanel) mainFrame.getPanelByKey("login");
@@ -254,7 +255,7 @@ public class GameController extends KeyAdapter implements ActionListener {
             }
 
             // Preenche o NPC que está próximo do personagem
-            NPC nearbyNPC = personagem.getNearbyNPC(logica.getNpcs());
+            NPC nearbyNPC = player.getNearbyNPC(logic.getNpcs());
             if (nearbyNPC != null) {
                 mapPanel.getDialogBox().setDialogues(nearbyNPC.getDialogues());
                 mapPanel.getDialogBox().setScene(nearbyNPC.getScene());
@@ -294,30 +295,34 @@ public class GameController extends KeyAdapter implements ActionListener {
             }
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE && mapPanel.isVisible() && personagem.getNearbyNPC() != null) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE  && mapPanel != null && mapPanel.isVisible() && player.getNearbyNPC() != null) {
             mapPanel.getDialogBox().nextDialogue();
             mapPanel.getDialogBox().nextScene();
         }
 
+        if (e.getKeyCode() == KeyEvent.VK_I  && mapPanel != null && mapPanel.isVisible()) {
+            mapPanel.getPhone().setVisible(!mapPanel.getPhone().isVisible());
+        }
+
         if (isRunning) {
             if (e.getKeyCode() == KeyEvent.VK_W) {
-                personagem.setCima(true);
-                personagem.setLastDirectionPressed(Personagem.Direction.UP);
+                player.setCima(true);
+                player.setLastDirectionPressed(Player.Direction.UP);
             }
             if (e.getKeyCode() == KeyEvent.VK_S) {
-                personagem.setBaixo(true);
-                personagem.setLastDirectionPressed(Personagem.Direction.DOWN);
+                player.setBaixo(true);
+                player.setLastDirectionPressed(Player.Direction.DOWN);
             }
             if (e.getKeyCode() == KeyEvent.VK_A) {
-                personagem.setEsquerda(true);
-                personagem.setLastDirectionPressed(Personagem.Direction.LEFT);
+                player.setEsquerda(true);
+                player.setLastDirectionPressed(Player.Direction.LEFT);
             }
             if (e.getKeyCode() == KeyEvent.VK_D) {
-                personagem.setDireita(true);
-                personagem.setLastDirectionPressed(Personagem.Direction.RIGHT);
+                player.setDireita(true);
+                player.setLastDirectionPressed(Player.Direction.RIGHT);
             }
 
-            personagem.movimento();
+            player.movimento();
         }
     }
 
@@ -325,13 +330,13 @@ public class GameController extends KeyAdapter implements ActionListener {
     public void keyReleased(KeyEvent e) {
 
         if (isRunning) {
-            if (e.getKeyCode() == KeyEvent.VK_W) personagem.setCima(false);
-            if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(false);
-            if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(false);
-            if (e.getKeyCode() == KeyEvent.VK_D) personagem.setDireita(false);
+            if (e.getKeyCode() == KeyEvent.VK_W) player.setCima(false);
+            if (e.getKeyCode() == KeyEvent.VK_S) player.setBaixo(false);
+            if (e.getKeyCode() == KeyEvent.VK_A) player.setEsquerda(false);
+            if (e.getKeyCode() == KeyEvent.VK_D) player.setDireita(false);
 
-            if (!personagem.isCima() && !personagem.isBaixo() && !personagem.isEsquerda() && !personagem.isDireita()) {
-                personagem.setLastDirectionPressed(null);
+            if (!player.isCima() && !player.isBaixo() && !player.isEsquerda() && !player.isDireita()) {
+                player.setLastDirectionPressed(null);
             }
         }
     }
