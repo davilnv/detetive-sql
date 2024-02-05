@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class MuseumSystemDal {
@@ -77,4 +78,29 @@ public class MuseumSystemDal {
         return new DefaultTableModel(data, columnNames);
     }
 
+    public static List<String> getAnswerDayAcessUsers() {
+        String query = StaticQuerySQL.GET_DAY_ACCESS_USERS;
+        return getStringsFromQuery(query);
+    }
+
+
+    public static List<String> getAnswerAcessUsersCameras() {
+        String query = StaticQuerySQL.GET_ACCESS_CAMERAS;
+        return getStringsFromQuery(query);
+    }
+
+    private static List<String> getStringsFromQuery(String query) {
+        List<String> users = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            assert conn != null;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                users.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            ErrorHandler.logAndExit(e);
+        }
+        return users;
+    }
 }

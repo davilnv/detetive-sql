@@ -7,6 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.ihm.davilnv.bll.MuseumSystemBll;
 import br.com.ihm.davilnv.dal.DatabaseConnection;
@@ -230,6 +232,12 @@ public class GameController extends KeyAdapter implements ActionListener {
                             try {
                                 tableModel = MuseumSystemBll.executeQuery(query);
                                 museumSystemPanel.setResultTable(tableModel);
+                                List<String> correctAnswer = logic.checkAnswer(tableModel, mapPanel.getPhone().getCurrentQuestionIndex());
+                                if(correctAnswer != null) {
+                                    mapPanel.getPhone().getCurrentQuestion().setAnswered(true);
+                                    mapPanel.getPhone().getCurrentQuestion().setAnswer(correctAnswer.toString());
+                                }
+
                             } catch (SQLException ex) {
                                 museumSystemPanel.setResultError(ex.getMessage());
                             }
@@ -295,13 +303,23 @@ public class GameController extends KeyAdapter implements ActionListener {
             }
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE  && mapPanel != null && mapPanel.isVisible() && player.getNearbyNPC() != null) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE  && mapPanel != null && mapPanel.isVisible() && mapPanel.getDialogBox().isVisible() && player.getNearbyNPC() != null) {
             mapPanel.getDialogBox().nextDialogue();
             mapPanel.getDialogBox().nextScene();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_I  && mapPanel != null && mapPanel.isVisible()) {
             mapPanel.getPhone().setVisible(!mapPanel.getPhone().isVisible());
+        }
+
+        if (
+                e.getKeyCode() == KeyEvent.VK_N
+                && mapPanel != null
+                && mapPanel.isVisible()
+                && mapPanel.getPhone().isVisible()
+                && mapPanel.getPhone().getCurrentQuestion().isAnswered()
+        ) {
+            mapPanel.getPhone().nextQuestion();
         }
 
         if (isRunning) {

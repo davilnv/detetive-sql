@@ -1,20 +1,23 @@
 package br.com.ihm.davilnv.model;
 
+import br.com.ihm.davilnv.bll.MuseumSystemBll;
+import br.com.ihm.davilnv.controller.GameController;
 import br.com.ihm.davilnv.statics.SceneInfo;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.swing.table.TableModel;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 public class Logic {
-    private int num1, num2;
     private List<Layer> layers;
     private List<NPC> npcs;
     private Computer computer;
-    private boolean ganhou;
+    private Question currentQuestion;
+    private boolean win;
 
     public Logic() {
         layers = new ArrayList<>();
@@ -34,6 +37,107 @@ public class Logic {
         npcs.add(new NPC(2, 64, 64, 13, 21, 940, 1040, "/assets/images/sprite/newscaster_universal.png", "Isabella Kensington", "Jornalista", "/assets/images/scene/scene-newscaster.png", SceneInfo.dialoguesNewscaster));
 
         computer = new Computer(32, 190, 74, 84);
+    }
+
+    public void playGame(GameController gameController) {
+        currentQuestion = gameController.getMapPanel().getPhone().getCurrentQuestion();
+
+        if (currentQuestion != null) {
+            if (currentQuestion.isAnswered()) {
+                gameController.getMapPanel().getPhone().nextQuestion();
+            }
+        }
+
+    }
+
+    public List<String> checkAnswer(TableModel tableModel, int questionIndex) {
+        switch (questionIndex) {
+            case 0: {
+                List<String> correctAnswer = MuseumSystemBll.getAnswerDayAcessUsers();
+
+                List<String> playerAnswer = new ArrayList<>();
+
+                // Primeira pergunta
+                // Verificar se no result possui uma coluna com o nome "nome"
+                System.out.println("Verificando resposta da pergunta " + (questionIndex + 1));
+                System.out.println("Colunas: " + tableModel.getColumnCount());
+                for (int columnIndex = 0; columnIndex < tableModel.getColumnCount(); columnIndex++) {
+                    System.out.println("Coluna: " + tableModel.getColumnName(columnIndex));
+                    if (tableModel.getColumnName(columnIndex).equals("NOME")) {
+                        System.out.println("Coluna encontrada");
+                        for (int rowIndex = 0; rowIndex < tableModel.getRowCount(); rowIndex++) {
+                            String name = (String) tableModel.getValueAt(rowIndex, columnIndex);
+                            System.out.println("Nome: " + name);
+                            playerAnswer.add(name);
+                        }
+
+                        System.out.println("Resposta do jogador: " + playerAnswer);
+                        System.out.println("Resposta correta: " + correctAnswer);
+
+                        // Compara a resposta do jogador com a resposta correta
+                        if (playerAnswer.size() != correctAnswer.size()) {
+                            System.out.println("Resultado: Resposta incorreta");
+                            return null;
+                        }
+
+                        for (String npc : playerAnswer) {
+                            if (!correctAnswer.contains(npc)) {
+                                System.out.println("Resultado: Resposta incorreta");
+                                return null;
+                            }
+                        }
+
+                        System.out.println("Resultado: Resposta correta");
+                        return correctAnswer;
+
+                    }
+                }
+            }
+            case 1: {
+                List<String> correctAnswer = MuseumSystemBll.getAnswerDayAcessUsers();
+
+                List<String> playerAnswer = new ArrayList<>();
+
+                // Primeira pergunta
+                // Verificar se no result possui uma coluna com o nome "nome"
+                System.out.println("Verificando resposta da pergunta " + (questionIndex + 1));
+                System.out.println("Colunas: " + tableModel.getColumnCount());
+                for (int columnIndex = 0; columnIndex < tableModel.getColumnCount(); columnIndex++) {
+                    System.out.println("Coluna: " + tableModel.getColumnName(columnIndex));
+                    if (tableModel.getColumnName(columnIndex).equals("NOME")) {
+                        System.out.println("Coluna encontrada");
+                        for (int rowIndex = 0; rowIndex < tableModel.getRowCount(); rowIndex++) {
+                            String name = (String) tableModel.getValueAt(rowIndex, columnIndex);
+                            System.out.println("Nome: " + name);
+                            playerAnswer.add(name);
+                        }
+
+                        System.out.println("Resposta do jogador: " + playerAnswer);
+                        System.out.println("Resposta correta: " + correctAnswer);
+
+                        // Compara a resposta do jogador com a resposta correta
+                        if (playerAnswer.size() != correctAnswer.size()) {
+                            System.out.println("Resultado: Resposta incorreta");
+                            return null;
+                        }
+
+                        for (String npc : playerAnswer) {
+                            if (!correctAnswer.contains(npc)) {
+                                System.out.println("Resultado: Resposta incorreta");
+                                return null;
+                            }
+                        }
+
+                        System.out.println("Resultado: Resposta correta");
+                        return correctAnswer;
+
+                    }
+                }
+            }
+            default:
+                return null;
+        }
+
     }
 
     public Layer getLayer(String key) {

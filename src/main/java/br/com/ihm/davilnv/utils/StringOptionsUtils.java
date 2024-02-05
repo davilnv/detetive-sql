@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class StringOptionsUtils {
 
-    public static void getTextOnLInes(Graphics2D g2d, FontMetrics fm, String text, int lineHeight, int curX, int curY, int textMaxWidth) {
+    public static int getTextOnLInes(Graphics2D g2d, FontMetrics fm, String text, int lineHeight, int curX, int curY, int textMaxWidth) {
         String[] words = text.split(" ");
         StringBuilder curLine = new StringBuilder(words[0]);
 
@@ -19,6 +19,7 @@ public class StringOptionsUtils {
             }
         }
         g2d.drawString(curLine.toString(), curX, curY);
+        return curY;
     }
 
 }
