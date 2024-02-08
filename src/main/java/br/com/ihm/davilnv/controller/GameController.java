@@ -79,7 +79,7 @@ public class GameController extends KeyAdapter implements ActionListener {
         }
 
         mainFrame.addKeyListener(this);
-
+        mainFrame.repaint();
         mainFrame.setFocusable(true);
 
     }
