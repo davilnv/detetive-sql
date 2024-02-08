@@ -53,11 +53,11 @@ public class Logic {
     }
 
     public List<String> checkAnswer(TableModel tableModel, int questionIndex) {
+        List<String> playerAnswer = new ArrayList<>();
+
         switch (questionIndex) {
             case 0: {
                 List<String> correctAnswer = MuseumSystemBll.getAnswerDayAcessUsers();
-
-                List<String> playerAnswer = new ArrayList<>();
 
                 // Primeira pergunta
                 // Verificar se no result possui uma coluna com o nome "nome"
@@ -79,26 +79,28 @@ public class Logic {
                         // Compara a resposta do jogador com a resposta correta
                         if (playerAnswer.size() != correctAnswer.size()) {
                             System.out.println("Resultado: Resposta incorreta");
+                            playerAnswer.clear();
                             return null;
                         }
 
                         for (String npc : playerAnswer) {
                             if (!correctAnswer.contains(npc)) {
                                 System.out.println("Resultado: Resposta incorreta");
+                                playerAnswer.clear();
                                 return null;
                             }
                         }
 
                         System.out.println("Resultado: Resposta correta");
+
+                        playerAnswer.clear();
                         return correctAnswer;
 
                     }
                 }
             }
             case 1: {
-                List<String> correctAnswer = MuseumSystemBll.getAnswerDayAcessUsers();
-
-                List<String> playerAnswer = new ArrayList<>();
+                List<String> correctAnswer = MuseumSystemBll.getAnswerAcessUsersCameras();
 
                 // Primeira pergunta
                 // Verificar se no result possui uma coluna com o nome "nome"
@@ -120,17 +122,20 @@ public class Logic {
                         // Compara a resposta do jogador com a resposta correta
                         if (playerAnswer.size() != correctAnswer.size()) {
                             System.out.println("Resultado: Resposta incorreta");
+                            playerAnswer.clear();
                             return null;
                         }
 
                         for (String npc : playerAnswer) {
                             if (!correctAnswer.contains(npc)) {
                                 System.out.println("Resultado: Resposta incorreta");
+                                playerAnswer.clear();
                                 return null;
                             }
                         }
 
                         System.out.println("Resultado: Resposta correta");
+                        playerAnswer.clear();
                         return correctAnswer;
 
                     }

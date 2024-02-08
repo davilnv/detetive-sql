@@ -215,10 +215,21 @@ public class GameController extends KeyAdapter implements ActionListener {
                 });
 
                 for (JButton button : suspectPanel.getSuspectButtons()) {
+                    // Remove todos os ActionListeners existentes
+                    for (ActionListener al : button.getActionListeners()) {
+                        button.removeActionListener(al);
+                    }
+
+                    // Adiciona um novo ActionListener
                     button.addActionListener(e1 -> {
                         String npcName = button.getText();
                         NPC npc = logic.getNpcByName(npcName);
                         if (npc != null) {
+                            int count = mapPanel.getPhone().getQuestions().stream().map(Question::isAnswered).mapToInt(b -> b ? 1 : 0).sum();
+                            System.out.println("Perguntas respondidas: " + count);
+                            if (count <= 3) {
+                                JOptionPane.showMessageDialog(mapPanel, "Você precisa responder todas as perguntas antes de apontar um suspeito. Até o momento " + count + " perguntas foram respondidas!", "Atenção", JOptionPane.WARNING_MESSAGE);
+                            }
 //                        SuspectInfoPanel suspectInfoPanel = (SuspectInfoPanel) mainFrame.getPanelByKey("suspect-info");
 //                        suspectInfoPanel.setNpc(npc);
 //                        suspectInfoPanel.setVisible(true);

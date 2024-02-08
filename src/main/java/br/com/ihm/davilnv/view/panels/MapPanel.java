@@ -81,7 +81,7 @@ public class MapPanel extends BasePanel {
 
         NPC nearbyNPC = player.getNearbyNPC(logic.getNpcs());
 
-        if (player.getNearbyComputer(logic.getComputer()) || nearbyNPC != null) {
+        if (player.getNearbyComputer(logic.getComputer()) || player.getNearbyComputer(logic.getInfoPanelComputer()) || nearbyNPC != null) {
             drawKeyboardWarning(g2d, player.getX(), player.getY());
         }
 
