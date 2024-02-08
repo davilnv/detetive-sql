@@ -35,7 +35,7 @@ public class DialogBox {
     private static final int FRAMES_PER_SECOND = 20;
     private int frameCounter = 0;
     private boolean isActive;
-    ImageIcon spaceKeyIcon;
+    private ImageIcon spaceKeyIcon;
 
     public DialogBox() {
         spaceKeyIcon = new ImageIcon(Objects.requireNonNull(DialogBox.class.getResource("/assets/images/icons/space-keyboard-50-perc.png")));
