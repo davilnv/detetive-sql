@@ -1,12 +1,13 @@
 package br.com.ihm.davilnv.dal;
 
 import br.com.ihm.davilnv.utils.ErrorHandler;
-import br.com.ihm.davilnv.utils.StaticQuerySQL;
+import br.com.ihm.davilnv.statics.StaticQuerySQL;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class MuseumSystemDal {
@@ -46,16 +47,12 @@ public class MuseumSystemDal {
         return tableNames.toArray(new String[0]);
     }
 
-    public static TableModel executeQuery(String query) {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            assert conn != null;
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            return buildTableModel(rs);
-        } catch (SQLException e) {
-            ErrorHandler.logAndExit(e);
-        }
-        return null;
+    public static TableModel executeQuery(String query) throws SQLException {
+        Connection conn = DatabaseConnection.getConnection();
+        assert conn != null;
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        return buildTableModel(rs);
     }
 
     private static TableModel buildTableModel(ResultSet rs) throws SQLException {
@@ -81,4 +78,29 @@ public class MuseumSystemDal {
         return new DefaultTableModel(data, columnNames);
     }
 
+    public static List<String> getAnswerDayAcessUsers() {
+        String query = StaticQuerySQL.GET_DAY_ACCESS_USERS;
+        return getStringsFromQuery(query);
+    }
+
+
+    public static List<String> getAnswerAcessUsersCameras() {
+        String query = StaticQuerySQL.GET_ACCESS_CAMERAS;
+        return getStringsFromQuery(query);
+    }
+
+    private static List<String> getStringsFromQuery(String query) {
+        List<String> users = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            assert conn != null;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                users.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            ErrorHandler.logAndExit(e);
+        }
+        return users;
+    }
 }

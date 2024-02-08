@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/077f4140-c58c-4b73-9ca1-244030d5facf/console_3.sql" dialect="H2" />
     <file url="file://$PROJECT_DIR$/src/main/resources/files/create_data_game.sql" dialect="H2" />
+    <file url="PROJECT" dialect="H2" />
   </component>
 </project>

@@ -1,10 +1,14 @@
 package br.com.ihm.davilnv.view.components;
 
-import br.com.ihm.davilnv.view.BaseFrame;
+import br.com.ihm.davilnv.view.frames.BaseFrame;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.util.Objects;
 
+@Getter
+@Setter
 public class GameButton extends JButton {
 
     private String key;
@@ -20,16 +24,8 @@ public class GameButton extends JButton {
         setIcon(new ImageIcon(Objects.requireNonNull(GameButton.class.getResource(BaseFrame.DEFAULT_BUTTONS_PATH + "btn-" + key + ".png"))));
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public int isZero(int x, int xDefault) {
-    	return x == 0 ? xDefault : x;
+    public int isZero(int value, int defaultValue) {
+    	return value == 0 ? defaultValue : value;
     }
 
 }
