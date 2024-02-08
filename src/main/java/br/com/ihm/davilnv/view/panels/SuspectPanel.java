@@ -9,16 +9,20 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 public class SuspectPanel extends BasePanel {
-    private List<JLabel> suspectLabels;
+//    private List<JLabel> suspectLabels;
+    private List<JButton> suspectButtons;
     private JButton closeButton;
 
     public SuspectPanel(String key) {
         super(key);
+
+        suspectButtons = new ArrayList<>();
 
         // Carrega o Tema FlatIntelliJLaf
         try {
@@ -34,25 +38,33 @@ public class SuspectPanel extends BasePanel {
 
     public void setSuspectLabels(List<NPC> npcs) {
         for (NPC npc : npcs) {
-            JLabel label = new JLabel(npc.getNome());
-            label.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 16));
-            label.setHorizontalAlignment(SwingConstants.CENTER);
-            label.setVerticalAlignment(SwingConstants.CENTER);
-            label.setOpaque(true);
-            label.setBackground(Color.WHITE);
-            label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            JButton button = getButtonLayout(npc.getNome(), 16);//new JButton(npc.getNome());
 
-            // Set the icon of the JLabel to the image of the NPC
+            // Set the icon of the JButton to the image of the NPC
             ImageIcon npcImage = new ImageIcon(npc.getScene().getSubScenes().get(0));
-            label.setIcon(npcImage);
+            button.setIcon(npcImage);
 
-            add(label);
+            suspectButtons.add(button);
+
+            add(button);
         }
 
         // Cria o botão de fechar e adiciona o botão de fechar ao painel
-        closeButton = new JButton("Fechar");
+        closeButton = getButtonLayout("Fechar", 24);//new JButton("Fechar");
         closeButton.setForeground(Color.RED);
-        closeButton.setFont(BaseFrame.getFont(24));
+
         add(closeButton);
     }
+
+    private JButton getButtonLayout(String text, int fontSize) {
+        JButton button = new JButton(text);
+        button.setFont(BaseFrame.getFont(fontSize));
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        button.setOpaque(true);
+        button.setBackground(Color.WHITE);
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        return button;
+    }
+
 }

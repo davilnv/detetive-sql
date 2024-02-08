@@ -150,4 +150,15 @@ public class Logic {
         }
         return null;
     }
+
+
+    public NPC getNpcByName(String npcName) {
+        for (NPC npc : npcs) {
+            if (npc.getNome().equals(npcName)) {
+                return npc;
+            }
+        }
+        return null;
+    }
+
 }

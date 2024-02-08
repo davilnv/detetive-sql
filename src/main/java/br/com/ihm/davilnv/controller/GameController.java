@@ -207,6 +207,26 @@ public class GameController extends KeyAdapter implements ActionListener {
             if (player.getNearbyComputer(logic.getInfoPanelComputer())) {
                 mapPanel.setVisible(false);
                 suspectPanel.setVisible(true);
+
+
+                suspectPanel.getCloseButton().addActionListener(e1 -> {
+                    suspectPanel.setVisible(false);
+                    mapPanel.setVisible(true);
+                });
+
+                for (JButton button : suspectPanel.getSuspectButtons()) {
+                    button.addActionListener(e1 -> {
+                        String npcName = button.getText();
+                        NPC npc = logic.getNpcByName(npcName);
+                        if (npc != null) {
+//                        SuspectInfoPanel suspectInfoPanel = (SuspectInfoPanel) mainFrame.getPanelByKey("suspect-info");
+//                        suspectInfoPanel.setNpc(npc);
+//                        suspectInfoPanel.setVisible(true);
+//                        suspectPanel.setVisible(false);
+                        }
+                    });
+                }
+
             }
 
             if (player.getNearbyComputer(logic.getComputer())) {
@@ -267,11 +287,6 @@ public class GameController extends KeyAdapter implements ActionListener {
 
                 museumSystemPanel.getCloseButton().addActionListener(e1 -> {
                     museumSystemPanel.setVisible(false);
-                    mapPanel.setVisible(true);
-                });
-
-                suspectPanel.getCloseButton().addActionListener(e1 -> {
-                    suspectPanel.setVisible(false);
                     mapPanel.setVisible(true);
                 });
 
