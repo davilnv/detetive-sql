@@ -30,6 +30,7 @@ import javax.swing.table.TableModel;
 public class GameController extends KeyAdapter implements ActionListener {
     private MainFrame mainFrame;
     private MapPanel mapPanel;
+    private SuspectPanel suspectPanel;
     private Logic logic;
     private Player player;
     private MusicPlayer introGamePlayer;
@@ -70,7 +71,7 @@ public class GameController extends KeyAdapter implements ActionListener {
 
         mainFrame = new MainFrame();
         // TODO: Mudar posição do personagem para iniciar na porta do museu
-        player = new Player(8, 64, 64, 13, 21, 136, 212, "/assets/images/sprite/sprite-detective_universal.png");
+        player = new Player(8, 64, 64, 13, 21, 850, 1040, "/assets/images/sprite/sprite-detective_universal.png");
 
         DEVICE.setFullScreenWindow(mainFrame);
 
@@ -98,6 +99,10 @@ public class GameController extends KeyAdapter implements ActionListener {
         for (NPC npc : logic.getNpcs()) {
             colisao.add(npc.getPersonagemRectangle());
         }
+
+        // Carrega o paneiol de suspeitos
+        suspectPanel = (SuspectPanel) mainFrame.getPanelByKey("suspect");
+        suspectPanel.setSuspectLabels(logic.getNpcs());
 
         // Chama  a inicialização do banco de dados
         DatabaseConnection.executeScript("/files/create_data_game.sql");
@@ -199,6 +204,42 @@ public class GameController extends KeyAdapter implements ActionListener {
 
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
+            if (player.getNearbyComputer(logic.getInfoPanelComputer())) {
+                mapPanel.setVisible(false);
+                suspectPanel.setVisible(true);
+
+
+                suspectPanel.getCloseButton().addActionListener(e1 -> {
+                    suspectPanel.setVisible(false);
+                    mapPanel.setVisible(true);
+                });
+
+                for (JButton button : suspectPanel.getSuspectButtons()) {
+                    // Remove todos os ActionListeners existentes
+                    for (ActionListener al : button.getActionListeners()) {
+                        button.removeActionListener(al);
+                    }
+
+                    // Adiciona um novo ActionListener
+                    button.addActionListener(e1 -> {
+                        String npcName = button.getText();
+                        NPC npc = logic.getNpcByName(npcName);
+                        if (npc != null) {
+                            int count = mapPanel.getPhone().getQuestions().stream().map(Question::isAnswered).mapToInt(b -> b ? 1 : 0).sum();
+                            System.out.println("Perguntas respondidas: " + count);
+                            if (count <= 3) {
+                                JOptionPane.showMessageDialog(mapPanel, "Você precisa responder todas as perguntas antes de apontar um suspeito. Até o momento " + count + " perguntas foram respondidas!", "Atenção", JOptionPane.WARNING_MESSAGE);
+                            }
+//                        SuspectInfoPanel suspectInfoPanel = (SuspectInfoPanel) mainFrame.getPanelByKey("suspect-info");
+//                        suspectInfoPanel.setNpc(npc);
+//                        suspectInfoPanel.setVisible(true);
+//                        suspectPanel.setVisible(false);
+                        }
+                    });
+                }
+
+            }
+
             if (player.getNearbyComputer(logic.getComputer())) {
 
                 // Pega a instancia do LoginPanel
@@ -233,7 +274,7 @@ public class GameController extends KeyAdapter implements ActionListener {
                                 tableModel = MuseumSystemBll.executeQuery(query);
                                 museumSystemPanel.setResultTable(tableModel);
                                 List<String> correctAnswer = logic.checkAnswer(tableModel, mapPanel.getPhone().getCurrentQuestionIndex());
-                                if(correctAnswer != null) {
+                                if (correctAnswer != null) {
                                     mapPanel.getPhone().getCurrentQuestion().setAnswered(true);
                                     mapPanel.getPhone().getCurrentQuestion().setAnswer(correctAnswer.toString());
                                 }
@@ -303,21 +344,21 @@ public class GameController extends KeyAdapter implements ActionListener {
             }
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE  && mapPanel != null && mapPanel.isVisible() && mapPanel.getDialogBox().isVisible() && player.getNearbyNPC() != null) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && mapPanel != null && mapPanel.isVisible() && mapPanel.getDialogBox().isVisible() && player.getNearbyNPC() != null) {
             mapPanel.getDialogBox().nextDialogue();
             mapPanel.getDialogBox().nextScene();
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_I  && mapPanel != null && mapPanel.isVisible()) {
+        if (e.getKeyCode() == KeyEvent.VK_I && mapPanel != null && mapPanel.isVisible()) {
             mapPanel.getPhone().setVisible(!mapPanel.getPhone().isVisible());
         }
 
         if (
                 e.getKeyCode() == KeyEvent.VK_N
-                && mapPanel != null
-                && mapPanel.isVisible()
-                && mapPanel.getPhone().isVisible()
-                && mapPanel.getPhone().getCurrentQuestion().isAnswered()
+                        && mapPanel != null
+                        && mapPanel.isVisible()
+                        && mapPanel.getPhone().isVisible()
+                        && mapPanel.getPhone().getCurrentQuestion().isAnswered()
         ) {
             mapPanel.getPhone().nextQuestion();
         }

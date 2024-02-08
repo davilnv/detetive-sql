@@ -67,7 +67,7 @@ public class SceneInfo {
     public static final Dialog[] dialoguesNewscaster = {
             new Dialog("Olá, sou Isabella Kensington, sou apenas jornalista que está acompanhando o caso.  E antes que me pergunte, sim sou irmã do diretor deste museu, o Alexander.", Character.NEWSCASTER),
             new Dialog("Ele vive encantado por este diamante e provavelmente vai te contar alguma ficção sobre haha não sei de onde ele inventa estas coisas.", Character.NEWSCASTER),
-            new Dialog("Bem você pode entrevistar as pessoas que estão neste museu, aparentemente todos são suspeitos e podem ser acusados.", Character.NEWSCASTER),
+            new Dialog("Bem você pode entrevistar as pessoas que estão neste museu, aparentemente todos são suspeitos e podem ser acusados. Você deve seguir algumas perguntas e ao final acusar algum dos suspeitos, elas podem ser vistas apertando \"I\", será mostrado uma por vez e sempre que uma for respondida, pode apertar \"N\" para liberar a próxima.", Character.NEWSCASTER),
             new Dialog("Realize perguntas, encontre pistas e assim que tiver um veredito, basta vir até este painel de informações aqui na entrada do museu e informar quem sumiu com o diamante. Boa sorte!", Character.NEWSCASTER),
     };
 
