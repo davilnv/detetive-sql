@@ -16,6 +16,7 @@ public class MainFrame extends BaseFrame {
         panels.add(new CreditPanel("credit", "/assets/images/background/background-frames-creditos.png"));
         panels.add(new ConfigPanel("config", "/assets/images/background/background-frames-config.png"));
         panels.add(new LoadingPanel("loading", "/assets/images/background/background-frames.png"));
+        panels.add(new SuspectPanel("suspect"));
         panels.add(new MapPanel("map"));
         panels.add(new LoginPanel("login"));
         panels.add(new MuseumSystemPanel("museum-system"));
